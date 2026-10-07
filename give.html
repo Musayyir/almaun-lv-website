@@ -326,15 +326,15 @@
       <p class="impact-line" id="impactLine" aria-live="polite"></p>
 
       <div class="goal">
-        <div class="goal__row">
+        <div class="goal__row" style="display:none" data-goal-hidden="no confirmed 2026 goal yet">
           <span>2026 goal progress</span>
           <span><b id="goalNum">$20,000</b> of $50,000</span>
         </div>
-        <div class="goal__track">
+        <div class="goal__track" style="display:none">
           <div class="gv-goalghost" id="goalGhost" aria-hidden="true"></div>
           <div class="goal__fill" id="goalFill"></div>
         </div>
-        <p class="goal__cap" id="goalCap">In 2025 you helped us invest <b>$20,000+</b> back into the block. Help us reach <b>$50,000</b> in 2026.</p>
+        <p class="goal__cap" id="goalCap">In 2025 you helped us put <b>$20,000+</b> back into the block. Your gift keeps it going.</p>
       </div>
 
       <div class="widget__give" id="giveWrap">
@@ -744,7 +744,7 @@
           goalCap.innerHTML = 'Raised so far: <b>$' + fmt(BASE) + '</b> of $' + fmt(GOAL) + '. Your <b>$' + fmt(amt) + '</b> would push us toward <b class="gv-proj">$' + fmt(projected) + '</b>.';
         }
       } else {
-        goalCap.innerHTML = 'In 2025 you helped us invest <b>$20,000+</b> back into the block. Help us reach <b>$50,000</b> in 2026.';
+        goalCap.innerHTML = 'In 2025 you helped us put <b>$20,000+</b> back into the block. Your gift keeps it going.';
       }
     }
   }
