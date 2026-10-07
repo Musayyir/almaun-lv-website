@@ -16,6 +16,16 @@
         analytics. Stays completely inert until a real ID is set. ── */
   var GA4_ID = 'G-XXXXXXXXXX';
 
+  /* ── Donations: where every "Donate" button sends people. Donations stay on Squarespace for now.
+        BEFORE LAUNCH change this to an address that still reaches the Squarespace donate form once
+        almaunlv.org points at the new site (e.g. a donate. subdomain or the *.squarespace.com address).
+        Never leave it as www.almaunlv.org/donate-almaun after launch — that path redirects to give.html. ── */
+  var DONATE_URL = 'https://www.almaunlv.org/donate-almaun';
+  window.ALMAUN_DONATE_URL = DONATE_URL;
+  document.addEventListener('DOMContentLoaded', function () {
+    Array.prototype.forEach.call(document.querySelectorAll('a[data-donate-link]'), function (a) { a.href = DONATE_URL; });
+  });
+
   var doc = document;
 
   /* Load GA4 once configured (single place, every page — no per-page snippet). */
