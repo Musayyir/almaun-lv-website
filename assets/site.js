@@ -228,8 +228,19 @@
       if (form.checkValidity && !form.checkValidity()) { if (form.reportValidity) form.reportValidity(); return; }
       var success = function () { openModal(form.getAttribute('data-modal-success')); try { form.reset(); } catch (err) {} };
 
-      /* No real key configured yet (or no fetch) → just confirm, don't call the network. */
-      if (!WEB3FORMS_KEY || WEB3FORMS_KEY.indexOf('REPLACE_') === 0 || !window.fetch) { success(); return; }
+      /* No real key configured yet (or no fetch) → open a pre-filled email instead, so no message is ever lost. */
+      if (!WEB3FORMS_KEY || WEB3FORMS_KEY.indexOf('REPLACE_') === 0 || !window.fetch) {
+        var lines = [];
+        Array.prototype.forEach.call(form.elements, function (el) {
+          if (!el.name || el.type === 'submit' || el.type === 'button' || el.type === 'hidden') return;
+          if ((el.type === 'checkbox' || el.type === 'radio') && !el.checked) return;
+          var lbl = (form.querySelector('label[for="' + el.id + '"]') || {}).textContent || el.name;
+          if (String(el.value).trim()) lines.push(lbl.trim().replace(/\s*\*$/, '') + ': ' + el.value);
+        });
+        var subj = 'Al-Maun website: ' + (doc.title || 'message');
+        location.href = 'mailto:almaun@gmail.com?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(lines.join('\n'));
+        return;
+      }
 
       var data = new FormData(form);
       data.set('access_key', WEB3FORMS_KEY);
