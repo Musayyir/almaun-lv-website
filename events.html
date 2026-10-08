@@ -70,7 +70,7 @@
 .ev-times th{text-align:left;font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--text)}
 .ev-times th .ar{font-family:var(--font-ar);direction:rtl;font-weight:400;font-size:1.05rem;color:var(--text-muted);margin-inline-start:.5rem}
 .ev-times td{text-align:right;font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--brand-strong);white-space:nowrap}
-.ev-times td.ev-sunset{color:var(--accent);font-style:normal}
+.ev-times td.ev-sunset{color:color-mix(in srgb,var(--accent) var(--ink-mix),var(--ink-base));font-style:normal}
 
 .ev-note{margin-top:1.3rem;display:flex;gap:.65rem;align-items:flex-start;
   background:var(--band-marigold);border:1px solid var(--border);border-radius:var(--r-md);
@@ -95,9 +95,9 @@
 .ev-event:nth-child(6){--_c:var(--cta-strong)}
 .ev-event__body{padding:1.3rem 1.35rem 1.45rem;display:flex;flex-direction:column;flex:1}
 .ev-event__kicker{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--font-head);font-weight:700;
-  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--_c,var(--brand))}
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb,var(--_c,var(--brand)) var(--ink-mix),var(--ink-base))}
 .ev-event__flag{font-family:var(--font-head);font-weight:800;font-size:.62rem;letter-spacing:.08em;
-  background:color-mix(in srgb,var(--cta) 16%,var(--surface));color:var(--cta-strong);
+  background:color-mix(in srgb,var(--cta) 16%,var(--surface));color:var(--cta-ink);
   padding:.16rem .45rem;border-radius:var(--r-pill)}
 .ev-event h3{font-size:var(--fs-h3);font-weight:700;margin:.4rem 0 .8rem}
 .ev-meta{display:grid;gap:.45rem;margin-bottom:.9rem}
@@ -115,7 +115,7 @@
 .ev-rhythm__item:nth-child(4n+2){--_c:var(--accent)}
 .ev-rhythm__item:nth-child(4n+3){--_c:var(--cta)}
 .ev-rhythm__item:nth-child(4n+4){--_c:var(--green-deep)}
-.ev-rhythm__day{font-family:var(--font-head);font-weight:800;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--_c,var(--brand-strong))}
+.ev-rhythm__day{font-family:var(--font-head);font-weight:800;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--_c,var(--brand-strong)) var(--ink-mix),var(--ink-base))}
 .ev-rhythm__what{margin-top:.32rem;font-size:1rem;color:var(--text);line-height:1.35}
 .ev-rhythm__what b{font-weight:700}
 .ev-rhythm__time{display:block;font-family:var(--font-head);font-size:.85rem;color:var(--text-muted);margin-top:.15rem}
