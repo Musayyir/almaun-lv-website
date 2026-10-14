@@ -1,0 +1,6 @@
+# GitHub Pages (Jekyll) build settings: keep internal docs and tests off the public site.
+# Files and folders starting with "_" (e.g. _redirects, _drive-assets, assets/_buildkit.md) are skipped by default.
+exclude:
+  - LAUNCH.md
+  - README.md
+  - test/
