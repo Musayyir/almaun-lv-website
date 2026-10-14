@@ -540,6 +540,17 @@ p{margin:0}
 .tier__check svg{width:12px;height:12px;stroke:#fff}
 .tier[aria-pressed="true"] .tier__check{display:grid}
 
+.w-custom{margin-top:.7rem}
+.w-custom[hidden]{display:none}
+.w-custom__lbl{display:block;font-family:var(--font-head);font-weight:700;font-size:.78rem;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.4rem}
+.w-custom__field{display:flex;align-items:center;gap:.2rem;background:var(--surface-2);
+  border:2px solid var(--border);border-radius:var(--r-md);padding:.15rem .95rem;transition:border-color .2s,background .2s}
+.w-custom__field:focus-within{border-color:var(--cta);background:color-mix(in srgb,var(--cta) 6%,var(--surface))}
+.w-custom__cur{font-family:var(--font-head);font-weight:800;font-size:1.15rem;color:var(--text-muted)}
+.w-custom__field input{flex:1;border:none;background:transparent;color:var(--text);
+  font-family:var(--font-head);font-weight:800;font-size:1.15rem;padding:.7rem .2rem;outline:none;min-width:0}
+.w-custom__field input::placeholder{font-weight:600;color:var(--text-muted)}
 .impact-line{margin-top:1.15rem;background:var(--band-marigold);border-radius:var(--r-md);
   padding:.95rem 1.1rem;font-size:.98rem;color:var(--text);line-height:1.5;border:1px solid var(--border)}
 .impact-line b{color:var(--cta-strong)}
@@ -1160,7 +1171,6 @@ a.partner:hover{text-decoration:underline}
     </div>
 
     <div class="widget reveal" data-d="2" aria-labelledby="widget-h">
-      <span class="widget__flag" aria-hidden="true">Preview</span>
       <h3 class="widget__title" id="widget-h">Fund a kindness</h3>
       <p class="widget__sub">Choose an amount to see what your gift does.</p>
 
@@ -1190,10 +1200,18 @@ a.partner:hover{text-decoration:underline}
           <span class="tier__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
           <span class="tier__amt">$500</span><span class="tier__note">Keep a family housed</span>
         </button>
-        <button type="button" class="tier" data-amt="75" aria-pressed="false">
+        <button type="button" class="tier" data-amt="other" aria-pressed="false" aria-controls="wCustom">
           <span class="tier__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span>
           <span class="tier__amt">Other</span><span class="tier__note">You choose the amount</span>
         </button>
+      </div>
+
+      <div class="w-custom" id="wCustom" hidden>
+        <label class="w-custom__lbl" for="wCustomInput">Your amount</label>
+        <div class="w-custom__field">
+          <span class="w-custom__cur" aria-hidden="true">$</span>
+          <input type="number" id="wCustomInput" inputmode="numeric" min="1" step="1" placeholder="Enter an amount" aria-label="Custom donation amount in US dollars">
+        </div>
       </div>
 
       <p class="impact-line" id="impactLine" aria-live="polite"></p>
@@ -1481,30 +1499,50 @@ a.partner:hover{text-decoration:underline}
   var IMPACT = {
     '25':  {short:'donated meals for a family this week', long:'funds <b>donated meals for a family</b> this week'},
     '50':  {short:'a summer cooling &amp; hygiene kit', long:'sends a <b>summer cooling &amp; hygiene kit</b> into a 110&deg; desert'},
-    '75':  {short:'a mix of meals &amp; supplies', long:'covers <b>a little bit of everything</b> &mdash; meals, hygiene, and supplies'},
     '100': {short:'diapers &amp; formula for a baby', long:'keeps <b>a baby in diapers &amp; formula</b> for a month'},
     '250': {short:'a week of delivered groceries', long:'delivers <b>a week of groceries</b> to a homebound senior'},
     '500': {short:'a family kept in their home', long:'helps <b>keep a family in their home</b> with rent &amp; utility aid'}
   };
 
-  var state = { amt: 50, monthly: false };
+  var customWrap = document.getElementById('wCustom');
+  var customInput = document.getElementById('wCustomInput');
+  var OTHER = {short:'whatever is needed most', long:'goes <b>where it&rsquo;s needed most</b> &mdash; meals, hygiene, and supplies'};
 
-  function currentImpact(){ return IMPACT[state.amt] || IMPACT['50']; }
+  var state = { amt: 50, monthly: false, other: false };
+
+  function currentImpact(){ return state.other ? OTHER : (IMPACT[state.amt] || IMPACT['50']); }
 
   function render(){
-    var imp = currentImpact();
     var per = state.monthly ? '/mo' : '';
     var every = state.monthly ? ' <strong>every month</strong>' : '';
-    impactLine.innerHTML = 'Your <b>$' + state.amt + per + '</b> ' + imp.long + every + '.';
+    if(state.other && !state.amt){
+      impactLine.innerHTML = 'Enter any amount &mdash; every dollar stays local.';
+      giveBtn.textContent = 'Give';
+      return;
+    }
+    impactLine.innerHTML = 'Your <b>$' + state.amt + per + '</b> ' + currentImpact().long + every + '.';
     giveBtn.textContent = 'Give $' + state.amt + per;
   }
 
   function selectTier(btn){
     var amt = btn.getAttribute('data-amt');
     tierBtns.forEach(function(b){ b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
-    state.amt = amt;
+    state.other = amt === 'other';
+    customWrap.hidden = !state.other;
+    if(state.other){
+      var v = parseInt(customInput.value, 10);
+      state.amt = v >= 1 ? v : 0;
+      customInput.focus();
+    } else {
+      state.amt = amt;
+    }
     render();
   }
+  customInput.addEventListener('input', function(){
+    var v = parseInt(customInput.value, 10);
+    state.amt = v >= 1 ? v : 0;
+    render();
+  });
   tierBtns.forEach(function(b){ b.addEventListener('click', function(){ selectTier(b); }); });
 
   function setFreq(monthly){
@@ -1517,6 +1555,7 @@ a.partner:hover{text-decoration:underline}
   monthlyBtn.addEventListener('click', function(){ setFreq(true); });
 
   giveBtn.addEventListener('click', function(){
+    if(!state.amt){ customInput.focus(); return; }
     var per = state.monthly ? ' every month' : ' one time';
     var imp = currentImpact();
     thanksSm.innerHTML = 'Your gift of <b>$' + state.amt + per + '</b> funds ' + imp.short + '. Complete it on our secure donation page.';
