@@ -158,7 +158,7 @@ Note: footer now has a 4-column top (brand / Explore / Visit / Give). If bp.css 
 - Partners: ILM Foundation · Las Vegas Raiders · Albertsons · Raising Cane's · UnitedHealthcare · Spin City · UNLV · Vituity Cares.
 - Donation impact tiers (illustrative — mark preview): $25 hot meals for a family this week · $50 summer cooling & hygiene kit · $100 a free clinic visit · $250 a week of groceries delivered · $500 keep a family in their home (rent/utility). One-time + Monthly. Zakat-eligible, tax-deductible.
 - Prayer times (ILLUSTRATIVE placeholders — label "confirm with the masjid"; Jumu'ah 1:00 PM is real): Fajr 5:15 AM · Dhuhr 1:00 PM · Asr 4:45 PM · Maghrib sunset · Isha 8:45 PM.
-- IMAGES available in images/: hero-line.jpg, story-banner.jpg, feature-hug.jpg, g-haircut.jpg, g-feeding.jpg, g-volunteers.jpg, g-serve.jpg, g-126.jpg, g-348.jpg, prog-food.jpg, prog-health.jpg, prog-education.jpg, prog-reentry.jpg, prog-youth.jpg, donate.jpg, logo-green.png, logo-white.png, logo-dark.png. (prog-*.jpg are ~378px — use small.)
+- IMAGES available in images/: hero-neighbors.jpg, story-banner.jpg, feature-hug.jpg, g-haircut.jpg, g-feeding.jpg, g-volunteers.jpg, g-serve.jpg, g-126.jpg, g-348.jpg, prog-food.jpg, prog-health.jpg, prog-education.jpg, prog-reentry.jpg, prog-youth.jpg, donate.jpg, logo-green.png, logo-white.png, logo-dark.png. (prog-*.jpg are ~378px — use small.)
 - NUTRITION PASSPORT (a real, flagship program): a FREE, hands-on program to help prevent & manage **Type 2 diabetes** in the Historic Westside — serving ZIP **89106 & 89101**. Structured as three levels + a bonus:
   - **Level 1 — Learn:** free nutrition workshops (a **hot meal is provided**) — reading labels, portions, sugar, simple cooking.
   - **Level 2 — Do:** put it into practice — track habits, try recipes, complete simple health activities/challenges.
@@ -176,7 +176,7 @@ Note: footer now has a 4-column top (brand / Explore / Visit / Give). If bp.css 
 <meta property="og:description" content="Same as meta description.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.almaunlv.org/PAGE.html">
-<meta property="og:image" content="https://www.almaunlv.org/images/hero-line.jpg">
+<meta property="og:image" content="https://www.almaunlv.org/images/hero-neighbors.jpg">
 <meta name="twitter:card" content="summary_large_image">
 ```
 (The favicon links, bp.css, and viewport from the top of this kit still apply.)
