@@ -133,7 +133,7 @@ body{
   font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden;
   transition:background .4s ease,color .4s ease;
 }
-img{max-width:100%;display:block}
+img{max-width:100%;height:auto;display:block}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:pointer}
 h1,h2,h3,h4{font-family:var(--font-head);line-height:1.05;margin:0;letter-spacing:-.02em}
@@ -180,8 +180,9 @@ p{margin:0}
 }
 .btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:var(--shadow-md)}
 .btn:active{transform:translateY(0) scale(.99)}
-.btn--cta{--_bg:var(--cta)}
-.btn--cta:hover{--_bg:var(--cta-strong)}
+/* button fills: darker than --cta so white labels clear 4.5:1 in both themes */
+.btn--cta{--_bg:#D2451F}
+.btn--cta:hover{--_bg:#B73A1E}
 .btn--ghost{--_bg:transparent;--_fg:var(--text);box-shadow:inset 0 0 0 2px var(--border-strong)}
 .btn--ghost:hover{--_bg:var(--surface);box-shadow:inset 0 0 0 2px var(--brand)}
 /* ghost button on a dark band: keep light text on hover */
@@ -378,7 +379,7 @@ p{margin:0}
 .stat:nth-child(2){--_bar:var(--accent)}
 .stat:nth-child(3){--_bar:var(--cta)}
 .stat:nth-child(4){--_bar:var(--green-deep)}
-.stat__num{font-family:var(--font-head);font-weight:800;font-size:clamp(2.1rem,4.6vw,3.1rem);
+.stat__num{font-family:var(--font-head);font-weight:800;font-size:clamp(1.55rem,4.2vw,2.8rem);
   line-height:1;letter-spacing:-.04em;color:var(--text);display:block}
 .stat__label{margin-top:.6rem;font-size:.92rem;color:var(--text-muted);font-weight:500}
 .stats__foot{text-align:center;margin-top:1.9rem;font-size:1rem;color:var(--text-muted)}
@@ -430,6 +431,7 @@ p{margin:0}
 .card:hover .card__media img{transform:scale(1.05)}
 .card__body{padding:1.25rem 1.35rem 1.5rem;display:flex;flex-direction:column;flex:1}
 .card__kicker{font-family:var(--font-head);font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--_c,var(--brand))}
+.card__kicker{color:color-mix(in srgb,var(--_c,var(--brand)) 55%,var(--text))}
 .card h3{font-size:var(--fs-h3);font-weight:700;margin:.35rem 0 .5rem}
 .card__blurb{color:var(--text-muted);font-size:.96rem;font-style:italic;font-family:var(--font-accent);line-height:1.5}
 .tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}

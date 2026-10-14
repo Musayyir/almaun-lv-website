@@ -347,7 +347,7 @@
 
 /* ===== sticky Donate bar (appears on scroll, hides near footer) ===== */
 (function(){
-  if(/give\.html$/.test(location.pathname)) return;            // don't show on the Give page
+  if(/\/give(\.html)?\/?$/.test(location.pathname)) return;            // don't show on the Give page
   var bar=document.createElement('div'); bar.className='give-bar';
   bar.innerHTML='<span class="give-bar__msg">Every gift stays on the Westside.</span>'+
     '<a class="give-bar__cta btn btn--cta" href="give.html">Donate</a>'+

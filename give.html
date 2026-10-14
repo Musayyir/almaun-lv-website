@@ -76,7 +76,7 @@
 /* fills the intro column beside the tall donate widget so it doesn't leave a void */
 .donate__grid{align-items:start}
 .donate__photo{margin:1.7rem 0 0}
-.donate__photo img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r-xl);
+.donate__photo img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r-xl);
   border:1px solid var(--border);box-shadow:var(--shadow-md);display:block}
 .donate__photo figcaption{margin-top:.65rem;font-size:.9rem;color:var(--text-muted);
   font-style:italic;font-family:var(--font-accent)}
@@ -94,12 +94,18 @@
 
 /* calculator — reuses .widget shell */
 .gv-calc{position:sticky;top:88px}
-@media(max-width:940px){.gv-calc{position:static}}
+@media(max-width:940px){.gv-calc{position:relative;top:auto}}
 .gv-field{margin-top:1.1rem}
 .gv-field label{display:block;font-family:var(--font-head);font-weight:700;font-size:.82rem;
   letter-spacing:.03em;color:var(--text);margin-bottom:.45rem}
 .gv-field .gv-custom__field{border-radius:var(--r-md)}
 .gv-hint{font-size:.82rem;color:var(--text-muted);margin-top:.5rem;line-height:1.5}
+.gv-custom__err{font-size:.82rem;color:var(--danger,#B3261E);margin-top:.45rem;line-height:1.45;font-weight:600}
+.gv-custom__err[hidden]{display:none}
+.gv-slider__note{font-size:.8rem;color:var(--text-muted);margin-top:.35rem}
+.gv-slider__note[hidden]{display:none}
+.gv-zmsg{font-size:.85rem;font-weight:600;color:var(--brand-strong);margin-top:.6rem;text-align:center}
+.gv-zmsg[hidden]{display:none}
 .gv-result{margin-top:1.15rem;background:var(--band-mint);border:1px solid rgba(46,158,91,.28);
   border-radius:var(--r-md);padding:1rem 1.15rem;text-align:center}
 .gv-result__lbl{font-family:var(--font-head);font-weight:700;font-size:.74rem;letter-spacing:.08em;
@@ -113,8 +119,10 @@
    ============================================================ */
 .gv-ways{background:var(--band-mint)}
 .gv-ways .sec-head{text-align:center;margin-inline:auto}
-.gv-ways .inv-grid{grid-template-columns:repeat(3,1fr)}
-@media(max-width:860px){.gv-ways .inv-grid{grid-template-columns:1fr}}
+.gv-ways .inv-grid{grid-template-columns:repeat(6,1fr)}
+.gv-ways .inv-grid>.inv{grid-column:span 2}
+.gv-ways .inv-grid>.inv:nth-child(n+4){grid-column:span 3}
+@media(max-width:860px){.gv-ways .inv-grid{grid-template-columns:1fr}.gv-ways .inv-grid>.inv,.gv-ways .inv-grid>.inv:nth-child(n+4){grid-column:auto}}
 .gv-ways .inv:nth-child(4) .inv__ic{--_bg:color-mix(in srgb,var(--green-deep) 18%,var(--surface))}
 .gv-ways .inv:nth-child(5) .inv__ic{--_bg:color-mix(in srgb,var(--brand) 15%,var(--surface))}
 .gv-ways .inv:nth-child(6) .inv__ic{--_bg:color-mix(in srgb,var(--accent) 22%,var(--surface))}
@@ -295,6 +303,7 @@
           <span class="gv-slider__amt" id="sliderAmt">$50</span>
         </div>
         <input type="range" id="gvRange" min="10" max="500" step="5" value="50" aria-label="Choose your gift amount in US dollars">
+        <p class="gv-slider__note" id="sliderNote" hidden></p>
         <div class="gv-slider__impact">
           <span class="gv-slider__big">&asymp;&nbsp;<b id="impactNum">10</b> <span id="impactUnit">meals</span></span>
           <div class="gv-slider__dots" id="impactDots" aria-hidden="true"></div>
@@ -305,12 +314,13 @@
         <label class="gv-custom__lbl" for="gvCustom">Or give another amount</label>
         <div class="gv-custom__field">
           <span class="gv-custom__cur" aria-hidden="true">$</span>
-          <input type="number" id="gvCustom" inputmode="numeric" min="1" step="1" placeholder="Enter an amount" aria-label="Custom donation amount in US dollars">
+          <input type="number" id="gvCustom" inputmode="numeric" min="1" step="1" placeholder="Enter an amount" aria-label="Custom donation amount in US dollars" aria-describedby="gvCustomErr">
         </div>
+        <p class="gv-custom__err" id="gvCustomErr" role="alert" hidden>Please enter whole dollars only, like 75.</p>
       </div>
 
       <fieldset class="gv-desig" style="border:none;margin-inline:0;padding:0">
-        <legend class="gv-desig__lbl" style="padding:0">Designate this gift</legend>
+        <legend class="gv-desig__lbl" style="padding:0">Is this Zakat or Sadaqah?</legend>
         <div class="gv-desig__row">
           <label class="gv-desig__opt">
             <input type="radio" name="gvDesig" value="Sadaqah" checked>
@@ -321,6 +331,7 @@
             <span>Zakat<small>Obligatory alms</small></span>
           </label>
         </div>
+        <p class="gv-hint" id="desigHint">For your own planning &mdash; this choice isn&#39;t sent to the donation page. If it&#39;s Zakat, email <a href="mailto:almaun@gmail.com?subject=My%20gift%20is%20Zakat">almaun@gmail.com</a> or call <a href="tel:+17026472500">(702) 647-2500</a> after giving and we&#39;ll make sure it goes to Zakat.</p>
       </fieldset>
 
       <p class="impact-line" id="impactLine" aria-live="polite"></p>
@@ -373,7 +384,7 @@
 
       <ol class="gv-how">
         <li><span class="num">1</span><span>Decide what you owe. Use the quick calculator &mdash; zakat is <b>2.5%</b> of the wealth you&#39;ve held for a full lunar year, once it&#39;s above nisab.</span></li>
-        <li><span class="num">2</span><span>In the donation form, set <b>&ldquo;Designate this gift&rdquo;</b> to <b>Zakat</b> (or leave it on Sadaqah for general charity). Your choice is noted with the gift.</span></li>
+        <li><span class="num">2</span><span>Give on our secure donation page &mdash; you&#39;ll confirm the amount there. If it&#39;s Zakat, let us know by email at <a href="mailto:almaun@gmail.com?subject=My%20gift%20is%20Zakat">almaun@gmail.com</a> or call <a href="tel:+17026472500">(702) 647-2500</a>, and we&#39;ll make sure it goes to Zakat.</span></li>
         <li><span class="num">3</span><span>Give &mdash; and know it flows straight to eligible neighbors: meals, essentials, and a hand up for the needy and the wayfarer.</span></li>
       </ol>
     </div>
@@ -399,7 +410,8 @@
       </div>
 
       <button type="button" class="btn btn--cta btn--lg btn--block" id="zGive" style="margin-top:1.2rem">Give this as Zakat</button>
-      <p class="gv-hint" style="text-align:center;margin-top:.7rem">This carries your estimate up to the donation form and marks it as Zakat.</p>
+      <p class="gv-zmsg" id="zMsg" role="status" aria-live="polite" hidden></p>
+      <p class="gv-hint" style="text-align:center;margin-top:.7rem">This fills in your estimate above as a one-time gift. You&#39;ll confirm the amount on the secure donation page.</p>
     </div>
   </div>
 </section>
@@ -409,7 +421,7 @@
   <div class="container">
     <div class="sec-head reveal">
       <p class="eyebrow" style="justify-content:center">More ways to give</p>
-      <h2 id="ways-h">Six ways to be a <em style="font-family:var(--font-accent);font-style:italic;font-weight:600;color:var(--cta)">good neighbor.</em></h2>
+      <h2 id="ways-h">Five ways to be a <em style="font-family:var(--font-accent);font-style:italic;font-weight:600;color:var(--cta)">good neighbor.</em></h2>
       <p class="lead" style="margin-inline:auto">A one-time gift is beautiful. So is a standing order, a bag of groceries, or a matched check from your employer. Pick whatever fits your life.</p>
     </div>
 
@@ -418,7 +430,7 @@
         <div class="inv__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#1F7A44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-9.2-8.6C1.3 9.3 3 5.5 6.4 5.5c1.9 0 3.4 1.1 4.3 2.4l.4.6.4-.6c.9-1.3 2.4-2.4 4.3-2.4 3.4 0 5.1 3.8 3.6 6.9C19 16.6 12 21 12 21Z"/><path d="M12 8.5v8"/></svg></div>
         <h3>Become a monthly neighbor</h3>
         <p>The quiet backbone of the work. A steady $25 or $50 a month lets us plan meals, kits, and delivery days ahead &mdash; and you can pause or cancel anytime.</p>
-        <a class="link" href="#give">Set up monthly <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="link" href="#give" data-set-monthly>Set up monthly <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </article>
 
       <article class="inv reveal" data-d="2">
@@ -449,12 +461,6 @@
         <a class="link" href="mailto:almaun@gmail.com?subject=Stock%20or%20legacy%20gift">Start a conversation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </article>
 
-      <article class="inv reveal" data-d="3">
-        <div class="inv__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#B67908" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/></svg></div>
-        <h3>Text-to-give</h3>
-        <p>The quickest kindness there is. Text <b>GIVE</b> to our number and follow the link &mdash; a neighbor is helped before your bus reaches the next stop.</p>
-        <a class="link" href="#give">Try it here <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </article>
     </div>
   </div>
 </section>
@@ -513,7 +519,7 @@
           </button>
         </h3>
         <div class="gv-acc__panel" id="faq1-panel" role="region" aria-labelledby="faq1-btn">
-          <div class="gv-acc__panel-inner"><p>Yes. Al-Maun Neighborly Needs is a registered 501(c)(3) non-profit (EIN 32-0087926), so gifts are tax-deductible to the extent allowed by law. Keep your receipt &mdash; a real donation platform emails one automatically.</p></div>
+          <div class="gv-acc__panel-inner"><p>Yes. Al-Maun Neighborly Needs is a registered 501(c)(3) non-profit (EIN 32-0087926), so gifts are tax-deductible to the extent allowed by law. You&#39;ll receive a receipt for your gift &mdash; keep it for your tax records. Need a year-end statement? Just ask us.</p></div>
         </div>
       </div>
 
@@ -758,10 +764,27 @@
   }
   tierBtns.forEach(function(b){ b.addEventListener('click', function(){ selectTier(b); }); });
 
+  var customErr = document.getElementById('gvCustomErr');
+  function showCustomErr(on){
+    if(!customErr) return;
+    customErr.hidden = !on;
+    customInput.setAttribute('aria-invalid', on ? 'true' : 'false');
+  }
   customInput.addEventListener('input', function(){
-    var v = parseInt(customInput.value, 10);
+    /* whole dollars only: reject "1e3", "12.5", "-5" etc. instead of silently truncating */
+    var raw = String(customInput.value || '').trim();
+    var bad = customInput.validity && customInput.validity.badInput;
     tierBtns.forEach(function(b){ b.setAttribute('aria-pressed', 'false'); });
-    state.amt = (isNaN(v) || v < 1) ? 0 : v;
+    if(raw === ''){
+      showCustomErr(!!bad);
+      state.amt = 0;
+    } else if(/^\d+$/.test(raw) && parseInt(raw, 10) >= 1){
+      showCustomErr(false);
+      state.amt = parseInt(raw, 10);
+    } else {
+      showCustomErr(true);
+      state.amt = 0;
+    }
     render();
   });
 
@@ -773,6 +796,10 @@
   }
   onceBtn.addEventListener('click', function(){ setFreq(false); });
   monthlyBtn.addEventListener('click', function(){ setFreq(true); });
+  /* "Set up monthly" links elsewhere on the page also switch the form to Monthly */
+  document.querySelectorAll('[data-set-monthly]').forEach(function(a){
+    a.addEventListener('click', function(){ setFreq(true); });
+  });
 
   document.querySelectorAll('input[name="gvDesig"]').forEach(function(r){
     r.addEventListener('change', render);
@@ -782,7 +809,9 @@
     if(!state.amt || state.amt < 1){ customInput.focus(); return; }
     var per = state.monthly ? ' every month' : ' one time';
     var imp = impactFor(state.amt);
-    thanksSm.innerHTML = 'Your gift of <b>$' + fmt(state.amt) + per + '</b>, given as <b>' + desig() + '</b>, funds ' + imp.short + '. Complete it on our secure donation page.';
+    var msg = 'Your gift of <b>$' + fmt(state.amt) + per + '</b> funds ' + imp.short + '. Please confirm the amount' + (state.monthly ? ' and monthly option' : '') + ' on our secure donation page.';
+    if(desig() === 'Zakat') msg += ' Giving it as Zakat? Email <a href="mailto:almaun@gmail.com?subject=My%20gift%20is%20Zakat">almaun@gmail.com</a> or call <a href="tel:+17026472500">(702) 647-2500</a> afterward so we can count it as Zakat.';
+    thanksSm.innerHTML = msg;
     giveWrap.style.display = 'none';
     thanks.classList.add('show');
     thanks.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'center'});
@@ -801,14 +830,24 @@
     if(!range) return;
     var sAmt = document.getElementById('sliderAmt'), num = document.getElementById('impactNum'),
         unit = document.getElementById('impactUnit'), dots = document.getElementById('impactDots');
+    var sNote = document.getElementById('sliderNote');
     function syncSlider(){
       var a = state.amt || 0;
-      if(a >= 10 && a <= 500) range.value = a;
-      var pct = (Math.min(Math.max(a,10),500) - 10) / 490 * 100;
-      range.style.setProperty('--_pct', pct.toFixed(1) + '%');
-      sAmt.textContent = '$' + fmt(a || 0);
-      range.setAttribute('aria-valuetext', '$' + fmt(a || 0) + ' donation');
-      var m = Math.max(1, Math.round((a || 0) / 5));
+      /* keep the thumb with the chosen amount; clamp to the ends when outside 10–500 */
+      if(a > 0){
+        var c = Math.min(Math.max(a, 10), 500);
+        range.value = c;
+        var pct = (c - 10) / 490 * 100;
+        range.style.setProperty('--_pct', pct.toFixed(1) + '%');
+      }
+      if(sNote){
+        if(a > 500){ sNote.textContent = 'Your $' + fmt(a) + ' gift is above the slider\u2019s $500 range \u2014 it\u2019s still set.'; sNote.hidden = false; }
+        else if(a > 0 && a < 10){ sNote.textContent = 'Your $' + fmt(a) + ' gift is below the slider\u2019s $10 start \u2014 it\u2019s still set.'; sNote.hidden = false; }
+        else { sNote.hidden = true; }
+      }
+      sAmt.textContent = a > 0 ? '$' + fmt(a) : '\u2014';
+      range.setAttribute('aria-valuetext', a > 0 ? '$' + fmt(a) + ' donation' : 'No amount chosen');
+      var m = a > 0 ? Math.max(1, Math.round(a / 5)) : 0;
       num.textContent = m; unit.textContent = (m === 1 ? 'meal' : 'meals');
       var show = Math.min(m, 24), html = '';
       for(var i = 0; i < show; i++) html += '<i></i>';
@@ -818,7 +857,7 @@
     range.addEventListener('input', function(){
       state.amt = parseInt(range.value, 10);
       tierBtns.forEach(function(b){ b.setAttribute('aria-pressed', 'false'); });
-      if(customInput) customInput.value = '';
+      if(customInput){ customInput.value = ''; showCustomErr(false); }
       render();
     });
     var _render = render; render = function(){ _render(); syncSlider(); };
@@ -830,19 +869,33 @@
   var zResult = document.getElementById('zResult');
   var zSub = document.getElementById('zSub');
   var zGive = document.getElementById('zGive');
+  var zMsg = document.getElementById('zMsg');
   var lastZakat = 0;
   function money(n){
     return '$' + fmt((Math.round(n * 100) / 100).toFixed(2).replace(/\.00$/, ''));
   }
   zAssets.addEventListener('input', function(){
     var v = parseFloat(zAssets.value);
+    if(zMsg) zMsg.hidden = true;
     if(isNaN(v) || v <= 0){ lastZakat = 0; zResult.textContent = '$0'; zSub.textContent = 'Enter an amount to estimate your zakat.'; return; }
     lastZakat = v * 0.025;
     zResult.textContent = money(lastZakat);
     zSub.innerHTML = '2.5% of <b>$' + fmt(Math.round(v)) + '</b> in zakatable wealth.';
   });
   zGive.addEventListener('click', function(){
-    var amt = Math.max(1, Math.round(lastZakat));
+    if(!(lastZakat > 0)){
+      /* nothing to carry up: prompt instead of inventing a $1 gift */
+      zMsg.textContent = 'Enter your zakatable assets above first to estimate your zakat.';
+      zMsg.hidden = false;
+      zAssets.focus();
+      return;
+    }
+    zMsg.hidden = true;
+    /* whole dollars, rounded up so the estimate is never short (cents first to avoid float noise) */
+    var amt = Math.max(1, Math.ceil(Math.round(lastZakat * 100) / 100));
+    /* zakat from the calculator is a one-time gift */
+    setFreq(false);
+    showCustomErr(false);
     /* set Zakat designation */
     var zradio = document.querySelector('input[name="gvDesig"][value="Zakat"]');
     if(zradio) zradio.checked = true;

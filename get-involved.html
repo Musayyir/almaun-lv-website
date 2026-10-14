@@ -73,7 +73,7 @@
 .gi-dropoff .photo-frame img{height:clamp(190px,22vw,260px);object-fit:cover;aspect-ratio:auto}
 @media (max-width:860px){.gi-goodsgrid{grid-template-columns:1fr}}
 .gi-needs__lbl{font-family:var(--font-head);font-weight:800;font-size:1.15rem;letter-spacing:-.01em;margin:1.4rem 0 .2rem}
-.gi-needs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.7rem;margin-top:1rem}
+.gi-needs{list-style:none;padding:0;margin-bottom:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.7rem;margin-top:1rem}
 .gi-need{display:flex;align-items:center;gap:.7rem;background:var(--surface);border:1px solid var(--border);
   border-radius:var(--r-md);padding:.72rem .9rem;box-shadow:var(--shadow-sm);
   font-family:var(--font-head);font-weight:600;font-size:.9rem;line-height:1.2}
@@ -109,6 +109,10 @@
 .gi-worship__time{display:inline-flex;align-items:center;gap:.5rem;margin-top:.7rem;
   font-family:var(--font-head);font-weight:700;color:var(--brand-strong);font-size:.98rem}
 .gi-worship__time .dot{width:9px;height:9px;border-radius:50%;background:var(--brand)}
+
+/* partner button: brand green is too light for white text in dark mode */
+:root[data-theme="dark"] .gi-partner-btn{--_bg:var(--green-deep)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .gi-partner-btn{--_bg:var(--green-deep)}}
 
 /* --- closing CTA --- */
 .gi-close h2{color:var(--text-invert);font-size:var(--fs-h2);font-weight:800;max-width:20ch;margin:0 auto 1rem}
@@ -338,7 +342,7 @@
     </div>
 
     <div class="reveal" data-d="2">
-      <button class="btn btn--lg" type="button" data-modal-open="partnerModal">
+      <button class="btn btn--lg gi-partner-btn" type="button" data-modal-open="partnerModal">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-9.5-9A5 5 0 0 1 12 5a5 5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9Z"/></svg>
         Become a partner
       </button>

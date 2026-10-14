@@ -33,8 +33,12 @@
 .sv-form::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;
   background:linear-gradient(90deg,var(--brand),var(--accent),var(--cta))}
 
-.sv-q{border:0;padding:1.4rem 0 0;margin:1.4rem 0 0;border-top:1px solid var(--border);min-inline-size:0}
-.sv-form .sv-q:first-of-type{border-top:0;margin-top:.5rem;padding-top:0}
+.sv-q{border:0;padding:0;margin:1.4rem 0 0;min-inline-size:0}
+/* divider drawn on the full-width legend so it sits above each question instead of through the heading */
+.sv-q>legend{width:100%;padding-top:1.4rem;border-top:1px solid var(--border)}
+.sv-q .req{color:var(--cta);margin-left:.15rem}
+.sv-form .sv-q:first-of-type{margin-top:.5rem}
+.sv-form .sv-q:first-of-type>legend{border-top:0;padding-top:0}
 .sv-q__label{font-family:var(--font-head);font-weight:700;font-size:1.06rem;letter-spacing:-.01em;
   color:var(--text);display:flex;gap:.6rem;align-items:baseline;padding:0;line-height:1.35}
 .sv-q__n{flex:none;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--band-mint);color:var(--brand-strong);
@@ -200,7 +204,7 @@
 
       <!-- Q1 · role (dropdown) -->
       <fieldset class="sv-q">
-        <legend class="sv-q__label"><span class="sv-q__n" aria-hidden="true">1</span> Which best describes you?</legend>
+        <legend class="sv-q__label"><span class="sv-q__n" aria-hidden="true">1</span> <span>Which best describes you? <span class="req" aria-hidden="true">*</span></span></legend>
         <div class="sv-selectwrap">
           <select class="sv-select" name="q1_role" required aria-label="Which best describes you?">
             <option value="" disabled selected>Choose one&hellip;</option>
@@ -215,7 +219,7 @@
 
       <!-- Q2 · area (dropdown) -->
       <fieldset class="sv-q">
-        <legend class="sv-q__label"><span class="sv-q__n" aria-hidden="true">2</span> What part of the valley are you in?</legend>
+        <legend class="sv-q__label"><span class="sv-q__n" aria-hidden="true">2</span> <span>What part of the valley are you in? <span class="req" aria-hidden="true">*</span></span></legend>
         <div class="sv-selectwrap">
           <select class="sv-select" name="q2_area" required aria-label="What part of the valley are you in?">
             <option value="" disabled selected>Choose one&hellip;</option>
@@ -247,7 +251,7 @@
 
       <!-- Q4 · impact (radio) -->
       <fieldset class="sv-q">
-        <legend class="sv-q__label"><span class="sv-q__n" aria-hidden="true">4</span> How much has Al-Maun helped you or your household?</legend>
+        <legend class="sv-q__label"><span class="sv-q__n" aria-hidden="true">4</span> <span>How much has Al-Maun helped you or your household? <span class="req" aria-hidden="true">*</span></span></legend>
         <div class="sv-opts">
           <label class="sv-pill"><input type="radio" name="q4_impact" value="A great deal" required><span>A great deal</span></label>
           <label class="sv-pill"><input type="radio" name="q4_impact" value="Somewhat"><span>Somewhat</span></label>
@@ -302,7 +306,7 @@
       <!-- optional contact -->
       <div class="sv-contact">
         <p class="sv-contact__lbl">Want us to follow up? (optional)</p>
-        <p class="sv-contact__hint">Leave your name and email only if you&rsquo;d like a reply. You can answer completely anonymously.</p>
+        <p class="sv-contact__hint">Leave your name and email only if you&rsquo;d like a reply. You don&rsquo;t have to give your name.</p>
         <div class="sv-grid2">
           <div class="sv-field">
             <label for="sv-name">Name</label>
@@ -317,7 +321,7 @@
 
       <div class="sv-actions">
         <button type="submit" class="btn btn--cta btn--lg">Submit my answers</button>
-        <p class="sv-privacy">Your answers go privately to the Al-Maun team. We may share <b>anonymous totals</b> with grant-makers and donors &mdash; never your name. See our <a href="privacy.html">privacy policy</a>.</p>
+        <p class="sv-privacy">Your answers go only to the Al-Maun team. We may share <b>anonymous totals</b> with grant-makers and donors &mdash; never your name. See our <a href="privacy.html">privacy policy</a>.</p>
       </div>
     </form>
 
@@ -370,11 +374,11 @@
         <nav class="footer__nav" aria-label="Footer">
           <a href="about.html">Our Story</a>
           <a href="programs.html">Programs</a>
+          <a href="nutrition-passport.html">Nutrition</a>
           <a href="impact.html">Impact</a>
+          <a href="events.html">Events &amp; Prayer</a>
           <a href="get-involved.html">Get Involved</a>
-          <a href="survey.html">Community Survey</a>
-          <a href="feedback.html">Feedback</a>
-          <a href="contact.html">Contact</a>
+          <a href="contact.html">Contact</a><a href="survey.html">Survey</a>
         </nav>
       </div>
       <div>

@@ -70,7 +70,7 @@
 .ev-times th{text-align:left;font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--text)}
 .ev-times th .ar{font-family:var(--font-ar);direction:rtl;font-weight:400;font-size:1.05rem;color:var(--text-muted);margin-inline-start:.5rem}
 .ev-times td{text-align:right;font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--brand-strong);white-space:nowrap}
-.ev-times td.ev-sunset{color:var(--accent);font-style:normal}
+.ev-times td.ev-sunset{color:var(--ev-marigold-text);font-style:normal}
 
 .ev-note{margin-top:1.3rem;display:flex;gap:.65rem;align-items:flex-start;
   background:var(--band-marigold);border:1px solid var(--border);border-radius:var(--r-md);
@@ -118,6 +118,12 @@
 .ev-rhythm__day{font-family:var(--font-head);font-weight:800;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--_c,var(--brand-strong))}
 .ev-rhythm__what{margin-top:.32rem;font-size:1rem;color:var(--text);line-height:1.35}
 .ev-rhythm__what b{font-weight:700}
+/* small labels: darker marigold (light) / lighter green (dark) so text clears 4.5:1 */
+:root{--ev-marigold-text:#8F5B00;--ev-deep-text:var(--green-deep)}
+:root[data-theme="dark"]{--ev-marigold-text:var(--accent);--ev-deep-text:#6FCF96}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ev-marigold-text:var(--accent);--ev-deep-text:#6FCF96}}
+.ev-rhythm__item:nth-child(4n+2) .ev-rhythm__day,.ev-event:nth-child(4) .ev-event__kicker{color:var(--ev-marigold-text)}
+.ev-rhythm__item:nth-child(4n+4) .ev-rhythm__day,.ev-event:nth-child(3) .ev-event__kicker{color:var(--ev-deep-text)}
 .ev-rhythm__time{display:block;font-family:var(--font-head);font-size:.85rem;color:var(--text-muted);margin-top:.15rem}
 
 /* ---------- LOCATION & DIRECTIONS ---------- */

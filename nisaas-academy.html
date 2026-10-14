@@ -71,7 +71,7 @@
 .na-gallery figure{margin:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
   overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .2s ease,box-shadow .2s ease}
 .na-gallery figure:hover{transform:translateY(-4px);box-shadow:var(--shadow-md)}
-.na-gallery img{width:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+.na-gallery img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;display:block}
 .na-gallery figcaption{padding:.7rem .9rem .85rem;font-size:.86rem;color:var(--text-muted);line-height:1.4}
 
 /* pillars — what children learn */
@@ -91,7 +91,7 @@
 /* cta band */
 .na-cta{background:
   radial-gradient(90% 120% at 100% 0,color-mix(in srgb,var(--accent) 20%,transparent) 0%,transparent 55%),
-  var(--brand-strong);color:#fff}
+  #114A27;color:#fff} /* fixed deep green in both themes: white text and marigold accent stay >=4.5:1 */
 .na-cta__in{max-width:760px}
 .na-cta h2{font-size:clamp(1.6rem,3.6vw,2.4rem);font-weight:800;letter-spacing:-.02em;line-height:1.12;color:#fff}
 .na-cta h2 em{font-family:var(--font-accent);font-style:italic;font-weight:600;color:var(--accent)}
@@ -296,11 +296,11 @@
         <nav class="footer__nav" aria-label="Footer">
           <a href="about.html">Our Story</a>
           <a href="programs.html">Programs</a>
-          <a href="nisaas-academy.html">Nisaa&rsquo;s Academy</a>
           <a href="nutrition-passport.html">Nutrition</a>
           <a href="impact.html">Impact</a>
+          <a href="events.html">Events &amp; Prayer</a>
           <a href="get-involved.html">Get Involved</a>
-          <a href="contact.html">Contact</a>
+          <a href="contact.html">Contact</a><a href="survey.html">Survey</a>
         </nav>
       </div>
       <div>
