@@ -591,6 +591,14 @@ p{margin:0}
 .partners__row{display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem}
 .partner{font-family:var(--font-head);font-weight:700;font-size:1rem;color:var(--text);
   background:var(--surface);border-radius:var(--r-pill);padding:.65rem 1.25rem;box-shadow:var(--shadow-sm);border:1px solid var(--border)}
+/* logo tiles: white in both themes so partner logos keep their own colors */
+.partners__row--logos{gap:1rem}
+.partner--logo{display:flex;align-items:center;justify-content:center;width:172px;height:92px;padding:.9rem 1.1rem;
+  background:#fff;border-radius:18px;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.partner--logo img{max-width:100%;max-height:52px;width:auto;height:auto;object-fit:contain}
+.partner--logo.is-tall img{max-height:74px}
+.partner--text{font-family:var(--font-head);font-weight:800;font-size:1.05rem;color:#1F2A20;text-align:center;line-height:1.15}
+@media (max-width:560px){.partner--logo{width:calc(50% - .5rem);height:84px}}
 a.partner{text-decoration:none}
 a.partner:hover{text-decoration:underline}
 
@@ -680,8 +688,8 @@ a.partner:hover{text-decoration:underline}
 /* ============================================================
    FULL-BLEED PHOTO HERO  (homepage)
    ============================================================ */
-.hero-full{position:relative;width:100%;min-height:clamp(560px,84vh,860px);
-  display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;background:#11220f}
+.hero-full{position:relative;width:100%;min-height:clamp(560px,calc(100svh - 78px),820px);
+  display:flex;align-items:center;overflow:hidden;isolation:isolate;background:#11220f}
 .hero-full__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 32%;z-index:0}
 @media (prefers-reduced-motion:no-preference){
   .hero-full__img{animation:heroZoom 26s ease-in-out infinite alternate;transform-origin:58% 42%}
@@ -691,8 +699,11 @@ a.partner:hover{text-decoration:underline}
   linear-gradient(to top, rgba(9,22,12,.94) 0%, rgba(12,26,15,.82) 20%, rgba(16,30,19,.42) 48%, rgba(20,32,22,.12) 74%, rgba(20,32,22,.02) 100%),
   linear-gradient(105deg, rgba(8,20,11,.86) 0%, rgba(11,24,14,.52) 34%, rgba(14,26,16,.08) 62%, rgba(14,26,16,0) 78%)}
 .hero-full__inner{position:relative;z-index:2;width:var(--container);margin-inline:auto;
-  padding-block:clamp(2.6rem,6vw,4.6rem) clamp(2.4rem,5vw,3.6rem);padding-top:clamp(4rem,14vh,9rem)}
-.hero-full__copy{max-width:46rem}
+  padding-block:clamp(3rem,8vh,5.5rem)}
+.hero-full__copy{max-width:62rem}
+/* heading gets the wider column so it sets as two lines ("Neighbors Helping / Neighbors");
+   the paragraph keeps a comfortable reading width */
+.hero-full__deck{max-width:40rem}
 .hero-full__eyebrow{font-family:var(--font-head);font-weight:700;font-size:.82rem;letter-spacing:.14em;
   text-transform:uppercase;color:#FCEFD3;display:inline-flex;align-items:center;gap:.6rem;margin:0 0 1.1rem;
   text-shadow:0 1px 10px rgba(0,0,0,.6)}
@@ -708,15 +719,14 @@ a.partner:hover{text-decoration:underline}
 .hero-full__ghost{color:#fff;background:rgba(255,246,233,.1);
   box-shadow:inset 0 0 0 2px rgba(255,246,233,.55);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
 .hero-full__ghost:hover{background:rgba(255,246,233,.2);box-shadow:inset 0 0 0 2px #fff}
-.hero-full__signals{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;margin-top:2rem}
+.hero-full__signals{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;margin-top:1.75rem}
 .hero-full .live{background:rgba(16,30,19,.62);color:#FFF6E9;
   box-shadow:inset 0 0 0 1.5px rgba(255,246,233,.24);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .hero-full__badge{display:inline-flex;align-items:center;gap:.5rem;
   font-family:var(--font-head);font-weight:800;font-size:.82rem;letter-spacing:.02em;
   color:var(--ink);background:var(--accent);border-radius:var(--r-pill);
-  padding:.55rem 1rem;transform:rotate(-1.5deg);box-shadow:var(--shadow-md)}
+  padding:.6rem 1.05rem;box-shadow:var(--shadow-md)}
 .hero-full__badge svg{width:15px;height:15px}
-@media (max-width:600px){.hero-full__badge{transform:none}}
 .hero-full.revealed .mark__line path{stroke-dashoffset:0}
 
 /* gallery polaroid → lightbox trigger */
@@ -889,39 +899,26 @@ a.partner:hover{text-decoration:underline}
   <div class="hero-full__scrim" aria-hidden="true"></div>
 
   <style>
-  .hero-count{position:absolute;top:clamp(4.5rem,9vw,6.5rem);right:clamp(1rem,3vw,2.2rem);z-index:4;
-    display:inline-flex;align-items:center;gap:.55rem;text-decoration:none;
-    background:rgba(20,83,43,.9);color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
-    border:1px solid rgba(255,255,255,.28);border-radius:16px;padding:.6rem .95rem;
-    box-shadow:0 14px 34px -14px rgba(0,0,0,.65);transform:rotate(1.5deg);transition:transform .2s ease}
-  .hero-count:hover{transform:rotate(0) translateY(-2px)}
-  .hero-count__num{font-family:var(--font-head);font-weight:800;font-size:2rem;line-height:.9;color:#F5A623}
-  .hero-count__ic{color:#F5A623;display:grid;place-items:center}
-  .hero-count__ic svg{width:26px;height:26px;display:block}
-  .hero-count__lbl{font-family:var(--font-head);font-weight:600;font-size:.72rem;line-height:1.2;letter-spacing:.02em;text-align:left}
-  .hero-count__lbl b{font-size:.82rem}
-  @media (max-width:600px){.hero-count{top:1rem;bottom:auto;right:1rem;padding:.5rem .75rem}.hero-count__num{font-size:1.5rem}}
+  .hero-count{display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;
+    background:rgba(20,83,43,.92);color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.28);border-radius:var(--r-pill);padding:.4rem 1rem .4rem .8rem;
+    box-shadow:var(--shadow-md);transition:transform .2s ease}
+  .hero-count:hover{transform:translateY(-2px)}
+  .hero-count__num{font-family:var(--font-head);font-weight:800;font-size:1.45rem;line-height:1;color:var(--lime)}
+  .hero-count__ic{color:var(--lime);display:grid;place-items:center}
+  .hero-count__ic svg{width:20px;height:20px;display:block}
+  .hero-count__lbl{font-family:var(--font-head);font-weight:600;font-size:.7rem;line-height:1.15;letter-spacing:.02em;text-align:left}
+  .hero-count__lbl b{font-size:.8rem}
+  .hero-count.is-soon{display:flex;width:fit-content;margin-bottom:1.3rem;padding:.55rem 1.25rem .55rem 1rem;gap:.65rem;
+    background:var(--lime);color:#10291A;border-color:transparent;box-shadow:0 12px 30px -10px rgba(132,204,22,.55)}
+  .hero-count.is-soon .hero-count__num{font-size:2rem;color:#10291A}
+  .hero-count.is-soon .hero-count__ic{color:#10291A}
+  .hero-count.is-soon .hero-count__lbl{font-size:.78rem}
+  .hero-count.is-soon .hero-count__lbl b{font-size:.95rem}
+  .hero-count.is-right{position:absolute;right:0;top:clamp(3rem,8vh,5.5rem);padding:.55rem 1.2rem .55rem 1rem;gap:.6rem}
+  .hero-count.is-right .hero-count__num{font-size:1.9rem}
+  .hero-count.is-right .hero-count__lbl b{font-size:.9rem}
   </style>
-  <a class="hero-count" href="events.html#ev-humday" aria-label="Day of Dignity — Al-Maun's biggest day of the year">
-    <span class="hero-count__num" id="dodNum" hidden></span>
-    <span class="hero-count__ic" id="dodIc" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><path d="M12 17.2s-2.6-1.7-2.6-3.5a1.4 1.4 0 0 1 2.6-.7 1.4 1.4 0 0 1 2.6.7c0 1.8-2.6 3.5-2.6 3.5Z"/></svg></span>
-    <span class="hero-count__lbl" id="dodLbl"><b>Day of Dignity</b><br>November 7, 2026</span>
-  </a>
-  <script>
-  /* Day of Dignity. Next event: Saturday 7 November 2026 (Judy, 15 Oct 2026).
-     The badge counts down to DOD; after the day passes, set the next date (or null
-     for "date coming soon"). */
-  (function(){
-    var DOD = '2026-11-07';
-    var num = document.getElementById('dodNum'), ic = document.getElementById('dodIc'), lbl = document.getElementById('dodLbl');
-    if(DOD){
-      var d = Math.ceil((new Date(DOD + 'T00:00:00') - new Date())/86400000);
-      if(d < 0){ return; }
-      num.textContent = d; num.hidden = false; if(ic){ ic.hidden = true; }
-      lbl.innerHTML = 'days to<br><b>Day of Dignity</b>';
-    }
-  })();
-  </script>
 
   <div class="hero-full__inner">
     <div class="hero-full__copy">
@@ -940,6 +937,41 @@ a.partner:hover{text-decoration:underline}
       </div>
 
       <div class="hero-full__signals">
+        <a class="hero-count" href="#day-of-dignity" aria-label="Day of Dignity with IDEA — November 7, 2026">
+          <span class="hero-count__num" id="dodNum" hidden></span>
+          <span class="hero-count__ic" id="dodIc" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><path d="M12 17.2s-2.6-1.7-2.6-3.5a1.4 1.4 0 0 1 2.6-.7 1.4 1.4 0 0 1 2.6.7c0 1.8-2.6 3.5-2.6 3.5Z"/></svg></span>
+          <span class="hero-count__lbl" id="dodLbl"><b>Day of Dignity</b><br>November 7, 2026</span>
+        </a>
+        <script>
+        /* Day of Dignity. Next event: Saturday 7 November 2026 (Judy, 15 Oct 2026).
+           The badge counts down to DOD; after the day passes, set the next date (or null
+           for "date coming soon"). */
+        (function(){
+          var DOD = '2026-11-07';
+          var num = document.getElementById('dodNum'), ic = document.getElementById('dodIc'), lbl = document.getElementById('dodLbl');
+          if(DOD){
+            var d = Math.ceil((new Date(DOD + 'T00:00:00') - new Date())/86400000);
+            /* preview the final-week look: add ?dod=3 (any number of days) to the URL */
+            var q = /[?&]dod=(\d+)/.exec(location.search); if(q){ d = +q[1]; }
+            var link = num.parentNode;
+            if(d < 0){ link.hidden = true; return; }
+            num.textContent = d; num.hidden = false; if(ic){ ic.hidden = true; }
+            lbl.innerHTML = (d === 0 ? 'Today:<br>' : d === 1 ? 'day to<br>' : 'days to<br>') + '<b>Day of Dignity</b>';
+            if(d === 0){ num.hidden = true; if(ic){ ic.hidden = false; } }
+            /* final week: lift it above the heading so it's the first thing people see */
+            if(d <= 7){
+              var eb = document.querySelector('.hero-full__eyebrow');
+              if(eb){ link.classList.add('is-soon'); eb.parentNode.insertBefore(link, eb); }
+            }
+            /* desktop: anchor it to the right edge of the content grid, level with the eyebrow;
+               phones keep it in the badge row under the buttons */
+            else if(window.matchMedia('(min-width:900px)').matches){
+              var inner = document.querySelector('.hero-full__inner');
+              if(inner){ link.classList.add('is-right'); inner.appendChild(link); }
+            }
+          }
+        })();
+        </script>
         <span class="hero-full__badge">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.5 6.5L21 9l-5 4.2L17.6 21 12 17.1 6.4 21 8 13.2 3 9l6.5-.5L12 2Z"/></svg>
           500+ served on Humanitarian Day
@@ -1088,7 +1120,7 @@ a.partner:hover{text-decoration:underline}
         </div>
       </article>
       <!-- 7 -->
-      <article class="card reveal" data-d="1" style="--_c:var(--green-deep)">
+      <article class="card reveal" id="day-of-dignity" data-d="1" style="--_c:var(--green-deep);scroll-margin-top:100px">
         <div class="card__bar"></div>
         <div class="card__media"><img src="images/prog26-dod.jpg" alt="A barber giving an older man a free haircut at Day of Dignity." width="900" height="600"></div>
         <div class="card__body">
@@ -1282,15 +1314,15 @@ a.partner:hover{text-decoration:underline}
 <section class="section partners" id="partners" aria-label="Our partners">
   <div class="container">
     <p class="partners__lbl reveal">In good company &mdash; partners on the block and across the USA</p>
-    <div class="partners__row reveal" data-d="1">
-      <span class="partner">ILM Foundation</span>
-      <span class="partner">Al-Maun Foundation</span>
-      <span class="partner">Masjid As-Sabur</span>
-      <span class="partner">Las Vegas Raiders</span>
-      <span class="partner">Albertsons</span>
-      <span class="partner">UnitedHealthcare</span>
-      <span class="partner">Powered by Faith</span>
-      <span class="partner">IDEA</span>
+    <div class="partners__row partners__row--logos reveal" data-d="1">
+      <span class="partner--logo"><img src="images/partners/ilm-foundation.png" alt="ILM Foundation" width="480" height="172" loading="lazy"></span>
+      <span class="partner--logo is-tall"><img src="images/partners/al-maun.png" alt="Al-Maun Foundation" width="200" height="227" loading="lazy"></span>
+      <span class="partner--logo is-tall"><img src="images/partners/masjid-as-sabur.png" alt="Masjid As-Sabur" width="240" height="246" loading="lazy"></span>
+      <span class="partner--logo"><img src="images/partners/raiders.svg" alt="Las Vegas Raiders" width="200" height="44" loading="lazy"></span>
+      <span class="partner--logo"><img src="images/partners/albertsons.png" alt="Albertsons" width="480" height="77" loading="lazy"></span>
+      <span class="partner--logo"><img src="images/partners/unitedhealthcare.svg" alt="UnitedHealthcare" width="160" height="50" loading="lazy"></span>
+      <span class="partner--logo"><img src="images/partners/powered-by-faith.png" alt="Powered by Faith" width="1000" height="554" style="border-radius:6px" loading="lazy"></span>
+      <span class="partner--logo"><img src="images/partners/idea.svg" alt="IDEA (Islamic Development &amp; Empowerment in America)" width="160" height="73" loading="lazy"></span>
     </div>
   </div>
 </section>
