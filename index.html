@@ -43,6 +43,7 @@
   --marigold:#F5A623;
   --tomato:#EE5B3B;
   --tomato-deep:#D2451F;
+  --lime:#84CC16;
   --ink:#2B2620;
 
   /* semantic */
@@ -185,9 +186,9 @@ p{margin:0}
 }
 .btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:var(--shadow-md)}
 .btn:active{transform:translateY(0) scale(.99)}
-/* button fills: darker than --cta so white labels clear 4.5:1 in both themes */
-.btn--cta{--_bg:#D2451F}
-.btn--cta:hover{--_bg:#B73A1E}
+/* donate buttons: lime with dark green labels (Judy, 15 Oct 2026); 7.9:1 contrast */
+.btn--cta{--_bg:#84CC16;--_fg:#10291A}
+.btn--cta:hover{--_bg:#A3E635}
 .btn--ghost{--_bg:transparent;--_fg:var(--text);box-shadow:inset 0 0 0 2px var(--border-strong)}
 .btn--ghost:hover{--_bg:var(--surface);box-shadow:inset 0 0 0 2px var(--brand)}
 .btn--lg{padding:1.05rem 1.85rem;font-size:1.05rem}
@@ -325,7 +326,7 @@ p{margin:0}
 .hero h1 .accent{font-family:var(--font-accent);font-style:italic;font-weight:600;color:var(--brand-strong);letter-spacing:-.01em}
 .mark{position:relative;display:inline-block;white-space:nowrap}
 .mark__line{position:absolute;left:-2%;right:-2%;bottom:-.14em;width:104%;height:.36em;overflow:visible;pointer-events:none}
-.mark__line path{fill:none;stroke:var(--cta);stroke-width:9;stroke-linecap:round;stroke-linejoin:round;
+.mark__line path{fill:none;stroke:var(--lime);stroke-width:9;stroke-linecap:round;stroke-linejoin:round;
   stroke-dasharray:640;stroke-dashoffset:640;transition:stroke-dashoffset 1s ease .35s}
 .hero.revealed .mark__line path{stroke-dashoffset:0}
 
@@ -700,7 +701,7 @@ a.partner:hover{text-decoration:underline}
 .hero-full__title{font-size:var(--fs-hero);font-weight:800;letter-spacing:-.035em;line-height:1.02;color:#fff;
   text-shadow:0 3px 30px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.55)}
 .hero-full__title .mark{color:#fff}
-.hero-full__title .mark__line path{stroke:var(--cta);stroke-width:10;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+.hero-full__title .mark__line path{stroke:var(--lime);stroke-width:10;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
 .hero-full__deck{margin-top:1.5rem;font-size:var(--fs-lead);line-height:1.7;
   color:rgba(255,246,233,.95);max-width:50ch;text-shadow:0 2px 16px rgba(0,0,0,.6)}
 .hero-full__cta{display:flex;flex-wrap:wrap;gap:.85rem;margin-top:2.1rem}
@@ -904,17 +905,18 @@ a.partner:hover{text-decoration:underline}
   <a class="hero-count" href="events.html#ev-humday" aria-label="Day of Dignity — Al-Maun's biggest day of the year">
     <span class="hero-count__num" id="dodNum" hidden></span>
     <span class="hero-count__ic" id="dodIc" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><path d="M12 17.2s-2.6-1.7-2.6-3.5a1.4 1.4 0 0 1 2.6-.7 1.4 1.4 0 0 1 2.6.7c0 1.8-2.6 3.5-2.6 3.5Z"/></svg></span>
-    <span class="hero-count__lbl" id="dodLbl"><b>Day of Dignity</b><br>date coming soon</span>
+    <span class="hero-count__lbl" id="dodLbl"><b>Day of Dignity</b><br>November 7, 2026</span>
   </a>
   <script>
-  /* Day of Dignity. The 2026 date isn't announced yet — the badge shows
-     "date coming soon". When they announce it, set DOD below (e.g. '2026-10-24') and it
-     automatically becomes a live countdown. Leave null until then. */
+  /* Day of Dignity. Next event: Saturday 7 November 2026 (Judy, 15 Oct 2026).
+     The badge counts down to DOD; after the day passes, set the next date (or null
+     for "date coming soon"). */
   (function(){
-    var DOD = null;
+    var DOD = '2026-11-07';
     var num = document.getElementById('dodNum'), ic = document.getElementById('dodIc'), lbl = document.getElementById('dodLbl');
     if(DOD){
-      var d = Math.max(0, Math.ceil((new Date(DOD + 'T00:00:00') - new Date())/86400000));
+      var d = Math.ceil((new Date(DOD + 'T00:00:00') - new Date())/86400000);
+      if(d < 0){ return; }
       num.textContent = d; num.hidden = false; if(ic){ ic.hidden = true; }
       lbl.innerHTML = 'days to<br><b>Day of Dignity</b>';
     }
@@ -926,8 +928,8 @@ a.partner:hover{text-decoration:underline}
       <p class="hero-full__eyebrow">Grassroots since 2003 &middot; Historic Westside, Las Vegas</p>
 
       <h1 class="hero-full__title" id="hero-h">
-        Neighbors helping
-        <span class="mark">neighbors<svg class="mark__line" viewBox="0 0 320 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 15 C 70 5, 130 22, 190 12 S 292 6, 314 17"/></svg></span>
+        Neighbors Helping
+        <span class="mark">Neighbors<svg class="mark__line" viewBox="0 0 320 24" preserveAspectRatio="none" aria-hidden="true"><path d="M6 15 C 70 5, 130 22, 190 12 S 292 6, 314 17"/></svg></span>
       </h1>
 
       <p class="hero-full__deck">The humanitarian arm of Masjid As-Sabur — the oldest mosque in Las Vegas. Donated meals, cooling kits, and a hand up for anyone who needs one. Muslim or not, no paperwork, no judgment.</p>
@@ -969,11 +971,10 @@ a.partner:hover{text-decoration:underline}
         <span class="stat__label">In direct aid given that day</span>
       </div>
       <div class="stat reveal" data-d="4">
-        <span class="stat__num" data-count="6">0</span>
+        <span class="stat__num" data-count="9">0</span>
         <span class="stat__label">Core programs, run by partners</span>
       </div>
     </div>
-    <p class="stats__foot reveal">&hellip;plus <b>grocery delivery for seniors</b>, <b>Kits 4 Kidz</b>, and a citywide <b>Humanitarian Day</b> that brings the whole block together.</p>
   </div>
 </section>
 
@@ -1003,7 +1004,7 @@ a.partner:hover{text-decoration:underline}
     <div class="story__media reveal" data-d="2">
       <figure class="photo-frame">
         <span class="tape tape--tl" aria-hidden="true"></span>
-        <img src="images/story-service.jpg" alt="Two volunteers in green Al-Maun shirts and aprons unpack boxes of diapers at a Humanitarian Day table, with the masjid&rsquo;s arched windows behind them." width="1200" height="800">
+        <img src="images/home-story-kits.jpg" alt="Al-Maun volunteers in green at the Humanitarian Day hygiene and first-aid kits table, with neighbors carrying green Al-Maun bags." width="1600" height="1067">
         <figcaption class="hero__cap" style="right:14px;left:auto;bottom:22px">Over 20 years &amp; counting.</figcaption>
       </figure>
     </div>
@@ -1015,7 +1016,7 @@ a.partner:hover{text-decoration:underline}
   <div class="container">
     <div class="sec-head reveal">
       <p class="eyebrow">What we do</p>
-      <h2 id="prog-h">Six ways we show up for <em>the block.</em></h2>
+      <h2 id="prog-h">Nine ways we show up for <em>the block.</em></h2>
       <p class="lead">No red tape. No means test at the door. Just neighbors covering the gaps the system leaves behind — from a hot plate of food to a second chance.</p>
     </div>
 
@@ -1023,7 +1024,7 @@ a.partner:hover{text-decoration:underline}
       <!-- 1 -->
       <article class="card reveal" data-d="1" style="--_c:var(--brand)">
         <div class="card__bar"></div>
-        <div class="card__media"><img src="images/prog-food.jpg" alt="Volunteers handing out fresh food and sack lunches at an Al-Maun distribution table." width="378" height="252"></div>
+        <div class="card__media"><img src="images/prog26-food.jpg" alt="A volunteer in a white coat handing out fresh fruit and produce to a young girl at a Food &amp; Nutrition table." width="900" height="600"></div>
         <div class="card__body">
           <span class="card__kicker">Program 01</span>
           <h3>Food &amp; Nutrition</h3>
@@ -1034,7 +1035,7 @@ a.partner:hover{text-decoration:underline}
       <!-- 2 -->
       <article class="card reveal" data-d="3" style="--_c:var(--accent)">
         <div class="card__bar"></div>
-        <div class="card__media"><img src="images/prog-education.jpg" alt="Young Nisaa&rsquo;s Academy students smiling together outside Masjid As-Sabur." width="378" height="252"></div>
+        <div class="card__media"><img src="images/prog26-nisaa.jpg" alt="Nisaa&rsquo;s Academy teachers and students in a classroom with character-value posters on the wall." width="900" height="600"></div>
         <div class="card__body">
           <span class="card__kicker">Program 02</span>
           <h3>Nisaa&rsquo;s Academy</h3>
@@ -1045,7 +1046,7 @@ a.partner:hover{text-decoration:underline}
       <!-- 4 -->
       <article class="card reveal" data-d="1" style="--_c:var(--green-deep)">
         <div class="card__bar"></div>
-        <div class="card__media"><img src="images/prog-reentry.jpg" alt="A young Al-Maun volunteer handing out stabilization supplies at a distribution." width="378" height="252"></div>
+        <div class="card__media"><img src="images/prog26-chances.jpg" alt="A group of men standing together on the grass outside." width="723" height="900"></div>
         <div class="card__body">
           <span class="card__kicker">Program 03</span>
           <h3>CHANCES</h3>
@@ -1056,7 +1057,7 @@ a.partner:hover{text-decoration:underline}
       <!-- 5 -->
       <article class="card reveal" data-d="2" style="--_c:var(--accent)">
         <div class="card__bar"></div>
-        <div class="card__media"><img src="images/prog-youth.jpg" alt="Young Al-Maun volunteers in aprons at a community service day." width="378" height="252"></div>
+        <div class="card__media"><img src="images/prog26-youth.jpg" alt="Two young people playing a game of chess at a table." width="900" height="675"></div>
         <div class="card__body">
           <span class="card__kicker">Program 04</span>
           <h3>Youth Development</h3>
@@ -1067,7 +1068,7 @@ a.partner:hover{text-decoration:underline}
       <!-- 6 -->
       <article class="card reveal" data-d="3" style="--_c:var(--brand)">
         <div class="card__bar"></div>
-        <div class="card__media"><img src="images/prog-community.jpg" alt="Neighbors and volunteers in green Al-Maun aprons at Humanitarian Day, with the Masjid As-Sabur arches behind." width="1200" height="800"></div>
+        <div class="card__media"><img src="images/prog26-culture.jpg" alt="Neighbors gathered around a table under a green Al-Maun tent." width="675" height="900"></div>
         <div class="card__body">
           <span class="card__kicker">Program 05</span>
           <h3>Community &amp; Culture</h3>
@@ -1078,12 +1079,44 @@ a.partner:hover{text-decoration:underline}
       <!-- 6 · Humanitarian Day (replaces the removed Free Health Clinic; balances the grid to 3x2) -->
       <article class="card reveal" data-d="2" style="--_c:var(--accent)">
         <div class="card__bar"></div>
-        <div class="card__media"><img src="images/prog-humday.jpg" alt="An Al-Maun volunteer in a green apron signing the &lsquo;Thank you to all our volunteers&rsquo; banner beside the Humanitarian Day banner at Masjid As-Sabur." width="1200" height="800"></div>
+        <div class="card__media"><img src="images/prog26-humday.jpg" alt="Neighbors lined up past the tables at Humanitarian Day." width="900" height="600"></div>
         <div class="card__body">
           <span class="card__kicker">Program 06</span>
           <h3>Humanitarian Day</h3>
           <p class="card__blurb">Our biggest day &mdash; the whole block, all at once.</p>
           <div class="tags"><span class="tag">Food &amp; groceries</span><span class="tag">Medical care</span><span class="tag">Hygiene kits</span><span class="tag">Haircuts</span></div>
+        </div>
+      </article>
+      <!-- 7 -->
+      <article class="card reveal" data-d="1" style="--_c:var(--green-deep)">
+        <div class="card__bar"></div>
+        <div class="card__media"><img src="images/prog26-dod.jpg" alt="A barber giving an older man a free haircut at Day of Dignity." width="900" height="600"></div>
+        <div class="card__body">
+          <span class="card__kicker">Program 07</span>
+          <h3>Day of Dignity with IDEA</h3>
+          <p class="card__blurb">Next Day of Dignity: November 7, 2026.</p>
+          <div class="tags"><span class="tag">With IDEA</span><span class="tag">Everyone welcome</span></div>
+        </div>
+      </article>
+      <!-- 8 -->
+      <article class="card reveal" data-d="2" style="--_c:var(--brand)">
+        <div class="card__bar"></div>
+        <div class="card__media"><img src="images/prog26-market.jpg" alt="Fresh produce on green-checked tables under canopies at an outdoor market." width="900" height="732"></div>
+        <div class="card__body">
+          <span class="card__kicker">Program 08 &middot; Coming soon</span>
+          <h3>Farmers Market</h3>
+          <p class="card__blurb">Fresh produce for the Westside &mdash; coming soon.</p>
+          <div class="tags"><span class="tag">Coming soon</span></div>
+        </div>
+      </article>
+      <!-- 9 -->
+      <article class="card reveal" data-d="3" style="--_c:var(--accent)">
+        <div class="card__bar"></div>
+        <div class="card__media"><img src="images/prog26-partners.jpg" alt="Police officers and community leaders standing together outside Masjid As-Sabur." width="900" height="600"></div>
+        <div class="card__body">
+          <span class="card__kicker">Program 09</span>
+          <h3>Community Partnership</h3>
+          <p class="card__blurb">Partners on the block and across the USA, serving together.</p>
         </div>
       </article>
     </div>
@@ -1102,47 +1135,47 @@ a.partner:hover{text-decoration:underline}
 <section class="section gallery" aria-labelledby="gal-h">
   <div class="container">
     <div class="sec-head reveal">
-      <p class="eyebrow" style="justify-content:center">Humanitarian Day 2025 &middot; March 22</p>
+      <p class="eyebrow" style="justify-content:center">Humanitarian Day, Day of Dignity &amp; more</p>
       <h2 id="gal-h">One day. Five hundred <em>neighbors.</em></h2>
-      <p class="lead" style="margin-inline:auto">Haircuts, mobile showers, medical care, cooling fans for a 110&deg; desert — over $20,000 in aid handed to real people in a single afternoon. Here&#39;s what it looked like.</p>
+      <p class="lead" style="margin-inline:auto">Haircuts, mobile showers, medical care, cooling fans for a 110&deg; desert — over $20,000 in aid handed to real people in a single afternoon on Humanitarian Day 2025. Here&#39;s what our days on the block look like.</p>
     </div>
 
     <div class="hd-grid">
       <figure class="hd-figure reveal">
-        <a class="hd-zoom" data-lightbox href="images/g-haircut.jpg" data-gallery="humday" data-caption="Fresh cut, biggest smile of the day" aria-label="Enlarge photo: Fresh cut, biggest smile of the day">
-          <img src="images/g-haircut.jpg" alt="A young boy beaming with a huge smile while a barber gives him a fresh free haircut outdoors." width="1000" height="667">
+        <a class="hd-zoom" data-lightbox href="images/g26-water.jpg" data-gallery="humday" data-caption="Water and supplies, by hand" aria-label="Enlarge photo: Water and supplies, by hand">
+          <img src="images/g26-water.jpg" alt="A volunteer handing a bottle of water and a green Al-Maun bag to a young man." width="1600" height="1067" loading="lazy">
         </a>
-        <figcaption>Fresh cut, biggest smile of the day</figcaption>
+        <figcaption>Water and supplies, by hand</figcaption>
       </figure>
       <figure class="hd-figure reveal">
-        <a class="hd-zoom" data-lightbox href="images/g-feeding.jpg" data-gallery="humday" data-caption="A meal, shared at the table" aria-label="Enlarge photo: A meal, shared at the table">
-          <img src="images/g-feeding.jpg" alt="Neighbors seated at tables with green tablecloths sharing a meal together outdoors." width="1200" height="800">
+        <a class="hd-zoom" data-lightbox href="images/g26-interfaith.jpg" data-gallery="humday" data-caption="Interfaith neighbors at Masjid As-Sabur" aria-label="Enlarge photo: Interfaith neighbors at Masjid As-Sabur">
+          <img src="images/g26-interfaith.jpg" alt="A large interfaith group gathered outside Masjid As-Sabur." width="1600" height="1056" loading="lazy">
         </a>
-        <figcaption>A meal, shared at the table</figcaption>
+        <figcaption>Interfaith neighbors at Masjid As-Sabur</figcaption>
       </figure>
       <figure class="hd-figure reveal">
-        <a class="hd-zoom" data-lightbox href="images/g-serve.jpg" data-gallery="humday" data-caption="Sack lunches &amp; juice, all day" aria-label="Enlarge photo: Sack lunches and juice, all day">
-          <img src="images/g-serve.jpg" alt="A young male volunteer in a green Al-Maun shirt standing behind boxes of fresh produce beside juice and sack-lunch signs." width="1200" height="800">
+        <a class="hd-zoom" data-lightbox href="images/g26-tables.jpg" data-gallery="humday" data-caption="A seat at the table for everyone" aria-label="Enlarge photo: A seat at the table for everyone">
+          <img src="images/g26-tables.jpg" alt="Neighbors seated at green-covered tables across the lot on Humanitarian Day." width="1600" height="1067" loading="lazy">
         </a>
-        <figcaption>Sack lunches &amp; juice, all day</figcaption>
+        <figcaption>A seat at the table for everyone</figcaption>
       </figure>
       <figure class="hd-figure reveal">
-        <a class="hd-zoom" data-lightbox href="images/g-126.jpg" data-gallery="humday" data-caption="Supplies with UnitedHealthcare" aria-label="Enlarge photo: Supplies with UnitedHealthcare">
-          <img src="images/g-126.jpg" alt="Neighbors receiving supplies at a UnitedHealthcare partner booth, with a senior woman volunteer in a green apron helping." width="1200" height="800">
+        <a class="hd-zoom" data-lightbox href="images/g26-serving.jpg" data-gallery="humday" data-caption="Volunteers serving lunch" aria-label="Enlarge photo: Volunteers serving lunch">
+          <img src="images/g26-serving.jpg" alt="A volunteer in a green Al-Maun Humanitarian Day shirt beside trays of food being served." width="1600" height="1067" loading="lazy">
         </a>
-        <figcaption>Supplies with UnitedHealthcare</figcaption>
+        <figcaption>Volunteers serving lunch</figcaption>
       </figure>
       <figure class="hd-figure reveal">
-        <a class="hd-zoom" data-lightbox href="images/g-348.jpg" data-gallery="humday" data-caption="Teens sorting Kits 4 Kidz" aria-label="Enlarge photo: Teens sorting Kits 4 Kidz">
-          <img src="images/g-348.jpg" alt="Teen volunteers in green aprons sorting Kits 4 Kidz hygiene supplies at a table." width="1200" height="800">
+        <a class="hd-zoom" data-lightbox href="images/g26-nisaa.jpg" data-gallery="humday" data-caption="Nisaa&rsquo;s Academy students" aria-label="Enlarge photo: Nisaa&rsquo;s Academy students">
+          <img src="images/g26-nisaa.jpg" alt="Smiling Nisaa&rsquo;s Academy girls posing together outside the masjid." width="923" height="692" loading="lazy">
         </a>
-        <figcaption>Teens sorting Kits 4 Kidz</figcaption>
+        <figcaption>Nisaa&rsquo;s Academy students</figcaption>
       </figure>
       <figure class="hd-figure reveal">
-        <a class="hd-zoom" data-lightbox href="images/g-volunteers.jpg" data-gallery="humday" data-caption="Green aprons, ready to serve" aria-label="Enlarge photo: Green aprons, ready to serve">
-          <img src="images/g-volunteers.jpg" alt="Two women volunteers in green Al-Maun aprons smiling side by side at a booth under a tent." width="1000" height="667">
+        <a class="hd-zoom" data-lightbox href="images/g26-dod.jpg" data-gallery="humday" data-caption="Day of Dignity on the street" aria-label="Enlarge photo: Day of Dignity on the street">
+          <img src="images/g26-dod.jpg" alt="Neighbors carrying bags and supplies down the street at Day of Dignity." width="1600" height="1067" loading="lazy">
         </a>
-        <figcaption>Green aprons, ready to serve</figcaption>
+        <figcaption>Day of Dignity on the street</figcaption>
       </figure>
     </div>
     <div class="hd-more">
@@ -1165,7 +1198,7 @@ a.partner:hover{text-decoration:underline}
       </ul>
       <figure class="photo-frame">
         <span class="tape tape--tl" aria-hidden="true"></span>
-        <img src="images/feature-hug.jpg" alt="An elder embracing two young Al-Maun volunteers at a community gathering on the Historic Westside." width="600" height="400">
+        <img src="images/home-give-kits.jpg" alt="A smiling Al-Maun volunteer in a green apron handing out supplies at the hygiene and first-aid kits table." width="1600" height="1067">
       </figure>
     </div>
 
@@ -1255,10 +1288,9 @@ a.partner:hover{text-decoration:underline}
       <span class="partner">Masjid As-Sabur</span>
       <span class="partner">Las Vegas Raiders</span>
       <span class="partner">Albertsons</span>
-      <span class="partner">Raising Cane&#39;s</span>
       <span class="partner">UnitedHealthcare</span>
-      <span class="partner">UNLV</span>
-      <span class="partner">Vituity Cares</span>
+      <span class="partner">Powered by Faith</span>
+      <span class="partner">IDEA</span>
     </div>
   </div>
 </section>

@@ -180,9 +180,9 @@ p{margin:0}
 }
 .btn:hover{transform:translateY(-2px) scale(1.02);box-shadow:var(--shadow-md)}
 .btn:active{transform:translateY(0) scale(.99)}
-/* button fills: darker than --cta so white labels clear 4.5:1 in both themes */
-.btn--cta{--_bg:#D2451F}
-.btn--cta:hover{--_bg:#B73A1E}
+/* donate buttons: lime with dark green labels (Judy, 15 Oct 2026); 7.9:1 contrast */
+.btn--cta{--_bg:#84CC16;--_fg:#10291A}
+.btn--cta:hover{--_bg:#A3E635}
 .btn--ghost{--_bg:transparent;--_fg:var(--text);box-shadow:inset 0 0 0 2px var(--border-strong)}
 .btn--ghost:hover{--_bg:var(--surface);box-shadow:inset 0 0 0 2px var(--brand)}
 /* ghost button on a dark band: keep light text on hover */
