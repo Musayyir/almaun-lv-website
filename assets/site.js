@@ -20,7 +20,7 @@
         BEFORE LAUNCH change this to an address that still reaches the Squarespace donate form once
         almaunlv.org points at the new site (e.g. a donate. subdomain or the *.squarespace.com address).
         Never leave it as www.almaunlv.org/donate-almaun after launch — that path redirects to give.html. ── */
-  var DONATE_URL = 'https://piccolo-tarpon-2jf2.squarespace.com/donate-almaun'; // Squarespace's built-in address: keeps working after almaunlv.org points at the new site
+  var DONATE_URL = 'https://donate.almaunlv.org/donate-almaun'; // Squarespace donation page on its own subdomain (primary domain of the Squarespace site since 16 Oct 2026); the old piccolo-tarpon address still serves the same form
   window.ALMAUN_DONATE_URL = DONATE_URL;
   document.addEventListener('DOMContentLoaded', function () {
     Array.prototype.forEach.call(document.querySelectorAll('a[data-donate-link]'), function (a) { a.href = DONATE_URL; });

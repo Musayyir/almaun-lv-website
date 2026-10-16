@@ -27,7 +27,7 @@ The redesigned site is **production-ready** — 16 pages, real Al-Maun photos, r
 ## 🔌 Last mile — human-gated (see LAUNCH steps below for how)
 - [ ] **Web3Forms key** → paste into `site.js` so forms deliver (step 1)
 - [ ] **GA4 Measurement ID** → paste into `site.js`; add Search Console (step 2)
-- [ ] **Donations** — stay on Squarespace (per current plan); point Give buttons at the existing checkout / a `donate.almaunlv.org` subdomain so they survive the DNS switch (step 3)
+- [x] **Donations** — stay on Squarespace; Give buttons point at `https://donate.almaunlv.org/donate-almaun` (subdomain connected and set as the Squarespace site's primary domain, www prefix off, 16 Oct 2026). Old pages on the Squarespace site disabled; donate page is its homepage.
 - [ ] **Hosting + DNS** — deploy to Cloudflare Pages, point the domain (steps 4–5)
 - [ ] **Remove noindex** at go-live so Google can index (step 6)
 - [ ] *(Optional, later)* Lightweight CMS (Decap/Sveltia) so staff self-edit events/text
