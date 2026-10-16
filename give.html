@@ -807,15 +807,31 @@
 
   giveBtn.addEventListener('click', function(){
     if(!state.amt || state.amt < 1){ customInput.focus(); return; }
+    var amtOk = Number.isInteger(Number(state.amt)) && Number(state.amt) >= 1 && Number(state.amt) <= 100000;
     var per = state.monthly ? ' every month' : ' one time';
     var imp = impactFor(state.amt);
-    var msg = 'Your gift of <b>$' + fmt(state.amt) + per + '</b> funds ' + imp.short + '. Please confirm the amount' + (state.monthly ? ' and monthly option' : '') + ' on our secure donation page.';
+    var msg = 'Your gift of <b>$' + fmt(state.amt) + per + '</b> funds ' + imp.short + '. ' + (amtOk ? 'Please check the amount' : 'Please enter the amount') + (state.monthly ? ' and monthly option' : '') + ' on our secure donation page.';
     if(desig() === 'Zakat') msg += ' Giving it as Zakat? Email <a href="mailto:almaun@gmail.com?subject=My%20gift%20is%20Zakat">almaun@gmail.com</a> or call <a href="tel:+17026472500">(702) 647-2500</a> afterward so we can count it as Zakat.';
     thanksSm.innerHTML = msg;
     giveWrap.style.display = 'none';
     thanks.classList.add('show');
     thanks.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'center'});
-    window.open(window.ALMAUN_DONATE_URL || 'https://donate.almaunlv.org/donate-almaun', '_blank', 'noopener');
+    /* carry the chosen amount to the donation page; a script there pre-selects it
+       (whole dollars 1-100000 only; otherwise the donor picks it there) */
+    var donateUrl = window.ALMAUN_DONATE_URL || 'https://donate.almaunlv.org/donate-almaun', passed = false;
+    try {
+      var u = new URL(donateUrl, window.location.href);
+      var amt = Number(state.amt);
+      u.searchParams.delete('amount');
+      u.searchParams.delete('frequency');
+      if (Number.isInteger(amt) && amt >= 1 && amt <= 100000) {
+        u.searchParams.set('amount', String(amt));
+        if (state.monthly) u.searchParams.set('frequency', 'monthly');
+        passed = true;
+      }
+      donateUrl = u.toString();
+    } catch (e) {}
+    window.open(donateUrl, '_blank', 'noopener');
   });
   giveAgain.addEventListener('click', function(){
     thanks.classList.remove('show');

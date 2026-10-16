@@ -1602,13 +1602,29 @@ a.partner:hover{text-decoration:underline}
 
   giveBtn.addEventListener('click', function(){
     if(!state.amt){ customInput.focus(); return; }
+    var amtOk = Number.isInteger(Number(state.amt)) && Number(state.amt) >= 1 && Number(state.amt) <= 100000;
     var per = state.monthly ? ' every month' : ' one time';
     var imp = currentImpact();
-    thanksSm.innerHTML = 'Your gift of <b>$' + state.amt + per + '</b> funds ' + imp.short + '. You&rsquo;ll confirm the amount on our secure donation page.';
+    thanksSm.innerHTML = 'Your gift of <b>$' + state.amt + per + '</b> funds ' + imp.short + '. ' + (amtOk ? 'Please check the amount' : 'Please enter the amount') + ' on our secure donation page.';
     giveWrap.style.display = 'none';
     thanks.classList.add('show');
     thanks.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'center'});
-    window.open(window.ALMAUN_DONATE_URL || 'https://donate.almaunlv.org/donate-almaun', '_blank', 'noopener');
+    /* carry the chosen amount to the donation page; a script there pre-selects it
+       (whole dollars 1-100000 only; otherwise the donor picks it there) */
+    var donateUrl = window.ALMAUN_DONATE_URL || 'https://donate.almaunlv.org/donate-almaun', passed = false;
+    try {
+      var u = new URL(donateUrl, window.location.href);
+      var amt = Number(state.amt);
+      u.searchParams.delete('amount');
+      u.searchParams.delete('frequency');
+      if (Number.isInteger(amt) && amt >= 1 && amt <= 100000) {
+        u.searchParams.set('amount', String(amt));
+        if (state.monthly) u.searchParams.set('frequency', 'monthly');
+        passed = true;
+      }
+      donateUrl = u.toString();
+    } catch (e) {}
+    window.open(donateUrl, '_blank', 'noopener');
   });
   giveAgain.addEventListener('click', function(){
     thanks.classList.remove('show');
