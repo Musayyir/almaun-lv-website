@@ -8,8 +8,9 @@
   "use strict";
 
   /* ── Web3Forms: paste your access key below to make every form deliver to your inbox.
-        Get a free key at web3forms.com (enter almaun@gmail.com). Until then, forms just
-        confirm on submit without sending. One key powers every form on the site. ── */
+        Get a free key at web3forms.com (enter almaun@gmail.com). Until then, NOTHING is sent
+        from the site: each form says so and opens a pre-filled email in the visitor's own
+        email app instead (see "FORM → SUCCESS MODAL" below). One key powers every form. ── */
   var WEB3FORMS_KEY = 'REPLACE_WITH_WEB3FORMS_KEY';
 
   /* ── Google Analytics 4: paste your Measurement ID (G-XXXXXXXXXX) to enable site-wide
@@ -221,26 +222,160 @@
 
   /* ============================================================
      FORM  →  SUCCESS MODAL   (declarative: form[data-modal-success])
+
+     With a Web3Forms key, forms post to Web3Forms and then open the success modal.
+     WITHOUT a key (the current state), nothing is sent from the website. Instead the
+     form is honest about it: a note under each form says sending opens the visitor's
+     email app, and on submit we open a pre-filled email to MAIL_TO plus a modal that
+     says so, with the message text to copy and the phone number if no email app opens.
+     We never show the "thank you, we got it" modal when nothing was sent.
      ============================================================ */
+  var MAIL_TO = 'almaun@gmail.com';
+  var PHONE_TEL = '+17026472500', PHONE_TXT = '(702) 647-2500';
+  var HAS_KEY = !!(WEB3FORMS_KEY && WEB3FORMS_KEY.indexOf('REPLACE_') !== 0 && window.fetch);
+
+  /* Subject per form, keyed by its success-modal id. Falls back to the hidden "subject" input or the page title. */
+  var MAIL_SUBJECTS = {
+    'ct-sent': 'Message from the website',
+    'rsvpd': 'RSVP',
+    'volThanks': 'Volunteer sign-up',
+    'subscribed': 'Please add me to your updates',
+    'signup-ok': 'NutriPass sign-up',
+    'reserved': 'Youth Conference reservation',
+    'survey-thanks': 'Community survey response',
+    'feedback-thanks': 'Private feedback'
+  };
+
+  function cleanText(t) { return String(t || '').replace(/\s+/g, ' ').replace(/\s*\*\s*$/, '').trim(); }
+
+  function fieldLabel(form, el) {
+    var lbl = el.id && form.querySelector('label[for="' + el.id + '"]');
+    if (lbl) return cleanText(lbl.textContent);
+    var fs = closestSafe(el, 'fieldset'), lg = fs && fs.querySelector('legend');
+    if (lg) return cleanText(lg.textContent).replace(/^\d+\s+/, '');
+    if (el.getAttribute('aria-label')) return cleanText(el.getAttribute('aria-label'));
+    var wrap = closestSafe(el, 'label');
+    if (wrap && el.type !== 'checkbox' && el.type !== 'radio') return cleanText(wrap.textContent);
+    return el.name;
+  }
+
+  function fieldValue(el) {
+    if (el.tagName === 'SELECT') {
+      if (!el.value) return '';
+      var o = el.options[el.selectedIndex];
+      return o ? cleanText(o.textContent) : '';
+    }
+    return String(el.value || '').trim();
+  }
+
+  function mailParts(form) {
+    var order = [], vals = {};
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (!el.name || el.disabled || el.type === 'submit' || el.type === 'button' || el.type === 'hidden') return;
+      if ((el.type === 'checkbox' || el.type === 'radio') && !el.checked) return;
+      var v = fieldValue(el);
+      if (!v) return;
+      var k = fieldLabel(form, el);
+      if (!(k in vals)) { vals[k] = []; order.push(k); }
+      vals[k].push(v);
+    });
+    var lines = order.map(function (k) {
+      var v = vals[k].join(', ');
+      return v.indexOf('\n') !== -1 ? k + ':\n' + v : k + ': ' + v;
+    });
+
+    var hidden = form.querySelector('input[type="hidden"][name="subject"]');
+    var context = closestSafe(form, '.modal');
+    var ctxTitle = context && context.querySelector('h2');
+    var subj = MAIL_SUBJECTS[form.getAttribute('data-modal-success')] || (hidden && hidden.value) || doc.title || 'Message';
+    if (ctxTitle) subj += ': ' + cleanText(ctxTitle.textContent);
+    subj = 'Al-Maun website: ' + subj;
+
+    var page = cleanText((doc.title || '').split(/[|\u2014\u2013-]/)[0]) || 'the website';
+    var body = 'As-salamu alaykum, Al-Maun,\n\n' + lines.join('\n') +
+      '\n\n(Sent by email from the "' + page + '" page on almaunlv.org)';
+    return { subject: subj, body: body };
+  }
+
+  var mailModal, mailText, mailCopy, mailLink;
+  function buildMailModal() {
+    if (mailModal) return mailModal;
+    mailModal = doc.createElement('div');
+    mailModal.className = 'modal';
+    mailModal.id = 'mail-handoff';
+    mailModal.setAttribute('role', 'dialog');
+    mailModal.setAttribute('aria-modal', 'true');
+    mailModal.setAttribute('aria-labelledby', 'mail-handoff-title');
+    mailModal.hidden = true;
+    mailModal.innerHTML =
+      '<div class="modal__backdrop" data-modal-close></div>' +
+      '<div class="modal__panel" role="document">' +
+        '<button class="modal__x" type="button" data-modal-close aria-label="Close">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+        '</button>' +
+        '<span class="modal__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></svg></span>' +
+        '<h2 id="mail-handoff-title">One more step: <em>press Send.</em></h2>' +
+        '<p>Your message has <b>not been sent yet</b>. We opened your email app with it filled in, addressed to ' +
+          '<a href="mailto:' + MAIL_TO + '" style="color:var(--brand-strong);font-weight:700">' + MAIL_TO + '</a>. Press Send there and it reaches us.</p>' +
+        '<p>No email app opened? Copy your message and email it to ' + MAIL_TO + ', or call ' +
+          '<a href="tel:' + PHONE_TEL + '" style="color:var(--brand-strong);font-weight:700">' + PHONE_TXT + '</a>.</p>' +
+        '<label for="mail-handoff-text" style="display:block;font-weight:700;margin-top:1rem;font-size:.9rem">Your message</label>' +
+        '<textarea id="mail-handoff-text" readonly rows="6" style="width:100%;margin-top:.35rem;padding:.7rem .8rem;border:1px solid rgba(0,0,0,.18);border-radius:12px;font:inherit;font-size:.9rem;line-height:1.45;background:transparent;color:inherit;resize:vertical"></textarea>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:.6rem;align-items:center">' +
+          '<a class="btn btn--cta" id="mail-handoff-open" href="#">Open email again</a>' +
+          '<button class="btn btn--ghost" type="button" id="mail-handoff-copy">Copy message</button>' +
+        '</div>' +
+      '</div>';
+    doc.body.appendChild(mailModal);
+    mailText = mailModal.querySelector('#mail-handoff-text');
+    mailCopy = mailModal.querySelector('#mail-handoff-copy');
+    mailLink = mailModal.querySelector('#mail-handoff-open');
+    mailCopy.addEventListener('click', function () {
+      var done = function () { mailCopy.textContent = 'Copied'; setTimeout(function () { mailCopy.textContent = 'Copy message'; }, 2000); };
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(mailText.value).then(done, function () { mailText.select(); }); return; }
+      } catch (err) {}
+      mailText.focus(); mailText.select();
+      try { if (doc.execCommand('copy')) done(); } catch (err) {}
+    });
+    return mailModal;
+  }
+
+  function sendByEmail(form) {
+    var m = mailParts(form);
+    var href = 'mailto:' + MAIL_TO + '?subject=' + encodeURIComponent(m.subject) + '&body=' + encodeURIComponent(m.body);
+    buildMailModal();
+    /* If the form lives in a modal (RSVP, volunteer...), close it so only the email hand-off shows. */
+    var host = closestSafe(form, '.modal');
+    if (host && host !== mailModal) closeModal(host);
+    mailText.value = 'To: ' + MAIL_TO + '\nSubject: ' + m.subject + '\n\n' + m.body;
+    mailLink.href = href;
+    openModal(mailModal);
+    /* Keep what they typed in the form (no reset): if no email app opens, nothing is lost. */
+    window.location.href = href;
+  }
+
+  /* Without a key, say up front that sending opens the visitor's email app. */
+  if (!HAS_KEY) {
+    Array.prototype.slice.call(doc.querySelectorAll('form[data-modal-success]')).forEach(function (form) {
+      var btn = form.querySelector('[type="submit"]');
+      if (!btn || form.querySelector('.form-mailnote')) return;
+      var note = doc.createElement('p');
+      note.className = 'form-mailnote';
+      note.style.cssText = 'flex-basis:100%;width:100%;margin:.55rem 0 0;font-size:.82rem;line-height:1.45;opacity:.85';
+      note.textContent = 'Sending opens your email app with your message filled in, addressed to ' + MAIL_TO + '. Press Send there to reach us.';
+      btn.parentNode.insertBefore(note, btn.nextSibling);
+    });
+  }
+
   Array.prototype.slice.call(doc.querySelectorAll('form[data-modal-success]')).forEach(function (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (form.checkValidity && !form.checkValidity()) { if (form.reportValidity) form.reportValidity(); return; }
       var success = function () { openModal(form.getAttribute('data-modal-success')); try { form.reset(); } catch (err) {} };
 
-      /* No real key configured yet (or no fetch) → open a pre-filled email instead, so no message is ever lost. */
-      if (!WEB3FORMS_KEY || WEB3FORMS_KEY.indexOf('REPLACE_') === 0 || !window.fetch) {
-        var lines = [];
-        Array.prototype.forEach.call(form.elements, function (el) {
-          if (!el.name || el.type === 'submit' || el.type === 'button' || el.type === 'hidden') return;
-          if ((el.type === 'checkbox' || el.type === 'radio') && !el.checked) return;
-          var lbl = (form.querySelector('label[for="' + el.id + '"]') || {}).textContent || el.name;
-          if (String(el.value).trim()) lines.push(lbl.trim().replace(/\s*\*$/, '') + ': ' + el.value);
-        });
-        var subj = 'Al-Maun website: ' + (doc.title || 'message');
-        location.href = 'mailto:almaun@gmail.com?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(lines.join('\n'));
-        return;
-      }
+      /* No real key configured (or no fetch) → nothing can be sent from the site. Hand off to email, honestly. */
+      if (!HAS_KEY) { sendByEmail(form); return; }
 
       var data = new FormData(form);
       data.set('access_key', WEB3FORMS_KEY);
@@ -249,7 +384,7 @@
 
       var btn = form.querySelector('[type="submit"]'), label = btn && btn.textContent;
       if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
-      var fail = function () { alert('Sorry — something went wrong sending that. Please email almaun@gmail.com or call (702) 647-2500.'); };
+      var fail = function () { alert('Sorry — something went wrong sending that. Please email ' + MAIL_TO + ' or call ' + PHONE_TXT + '.'); };
       fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Accept': 'application/json' }, body: data })
         .then(function (r) { return r.json(); })
         .then(function (res) { if (res && res.success) { success(); } else { fail(); } })
