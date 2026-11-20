@@ -937,24 +937,31 @@ a.partner:hover{text-decoration:underline}
       </div>
 
       <div class="hero-full__signals">
-        <a class="hero-count" href="#day-of-dignity" aria-label="Day of Dignity with IDEA — November 7, 2026">
+        <a class="hero-count" href="#day-of-dignity" aria-label="Day of Dignity with IDEA, held November 7, 2026. Thank you to everyone who came.">
           <span class="hero-count__num" id="dodNum" hidden></span>
           <span class="hero-count__ic" id="dodIc" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><path d="M12 17.2s-2.6-1.7-2.6-3.5a1.4 1.4 0 0 1 2.6-.7 1.4 1.4 0 0 1 2.6.7c0 1.8-2.6 3.5-2.6 3.5Z"/></svg></span>
-          <span class="hero-count__lbl" id="dodLbl"><b>Day of Dignity</b><br>November 7, 2026</span>
+          <span class="hero-count__lbl" id="dodLbl"><b>Day of Dignity</b><br>Thank you for Nov 7</span>
         </a>
         <script>
-        /* Day of Dignity. Next event: Saturday 7 November 2026 (Judy, 15 Oct 2026).
-           The badge counts down to DOD; after the day passes, set the next date (or null
-           for "date coming soon"). */
+        /* Day of Dignity badge.
+           The last one was Saturday 7 November 2026 (Judy, 15 Oct 2026); it has passed, so the
+           badge shows a thank-you (recap) state. When the next date is confirmed, set
+           DOD = 'YYYY-MM-DD' and update the static label + aria-label above to that date:
+           the badge then counts down, and after the day it falls back to the recap state
+           (it never advertises a date that has passed). */
         (function(){
-          var DOD = '2026-11-07';
+          var DOD = null;
           var num = document.getElementById('dodNum'), ic = document.getElementById('dodIc'), lbl = document.getElementById('dodLbl');
           if(DOD){
             var d = Math.ceil((new Date(DOD + 'T00:00:00') - new Date())/86400000);
             /* preview the final-week look: add ?dod=3 (any number of days) to the URL */
             var q = /[?&]dod=(\d+)/.exec(location.search); if(q){ d = +q[1]; }
             var link = num.parentNode;
-            if(d < 0){ link.hidden = true; return; }
+            if(d < 0){
+              link.setAttribute('aria-label', 'Day of Dignity with IDEA. Thank you to everyone who came.');
+              lbl.innerHTML = '<b>Day of Dignity</b><br>Thank you, Westside';
+              return;
+            }
             num.textContent = d; num.hidden = false; if(ic){ ic.hidden = true; }
             lbl.innerHTML = (d === 0 ? 'Today:<br>' : d === 1 ? 'day to<br>' : 'days to<br>') + '<b>Day of Dignity</b>';
             if(d === 0){ num.hidden = true; if(ic){ ic.hidden = false; } }
@@ -1126,7 +1133,7 @@ a.partner:hover{text-decoration:underline}
         <div class="card__body">
           <span class="card__kicker">Program 07</span>
           <h3>Day of Dignity with IDEA</h3>
-          <p class="card__blurb">Next Day of Dignity: November 7, 2026.</p>
+          <p class="card__blurb">Held November 7, 2026, with IDEA. Thank you to everyone who served and came out. Next date coming soon.</p>
           <div class="tags"><span class="tag">With IDEA</span><span class="tag">Everyone welcome</span></div>
         </div>
       </article>
@@ -1444,7 +1451,7 @@ a.partner:hover{text-decoration:underline}
   </div>
 </div>
 
-<script src="assets/site.js?v=6" defer></script>
+<script src="assets/site.js?v=7" defer></script>
 <script>
 (function(){
   "use strict";
